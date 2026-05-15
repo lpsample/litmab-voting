@@ -16,6 +16,7 @@ body {
 .container {
     max-width: 800px;
     margin: 0 auto;
+    padding-bottom: 100px;
 }
 
 /* Header Styles */
@@ -84,9 +85,10 @@ h1 {
 .voting-instructions {
     margin: 25px 0;
     padding: 20px;
-    background: rgba(16, 185, 129, 0.1);
-    border: 2px solid #10b981;
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.05), rgba(255, 255, 255, 0.05));
+    border: 2px solid #c0c0c0;
     border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(192, 192, 192, 0.2);
 }
 
 .voting-instructions h3 {
@@ -98,6 +100,11 @@ h1 {
 .voting-instructions ol {
     margin-left: 20px;
     color: #e5e7eb;
+    line-height: 1.8;
+}
+
+.voting-instructions li {
+    margin-bottom: 8px;
     line-height: 1.8;
 }
 
@@ -514,3 +521,77 @@ footer {
 }
 
 /* Made with Bob */
+
+/* Radio Button Styles */
+.radio-container {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.song-radio {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #3b82f6;
+}
+
+.song-radio:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.radio-label {
+    font-size: 0.95rem;
+    color: #e5e7eb;
+    cursor: pointer;
+    user-select: none;
+}
+
+.song-radio:disabled + .radio-label {
+    cursor: not-allowed;
+    color: #9ca3af;
+}
+
+/* Submit Vote Button */
+.submit-container {
+    margin: 40px 0 20px 0;
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    border: 2px solid #1e3a8a;
+}
+
+.submit-vote-button {
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    color: white;
+    border: none;
+    padding: 18px 50px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.submit-vote-button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2563eb, #1e3a8a);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+.submit-vote-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.submit-vote-button:disabled {
+    background: linear-gradient(135deg, #4b5563, #374151);
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
+}

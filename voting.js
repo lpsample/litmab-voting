@@ -43,6 +43,19 @@ function init() {
     if (firebaseInitialized) {
         listenToVoteUpdates();
     }
+    
+    // Set up submit button
+    const submitButton = document.getElementById('submitVoteButton');
+    if (submitButton) {
+        submitButton.addEventListener('click', handleSubmitVote);
+        
+        // Check if user has already voted
+        const hasVoted = Object.keys(userVotes).some(key => userVotes[key] === true);
+        if (hasVoted && !CONFIG.display.allowMultipleVotes) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Vote Submitted! ✓';
+        }
+    }
 }
 
 // Load user's previous votes from localStorage
@@ -144,20 +157,33 @@ function createSongElement(song) {
         div.appendChild(voteCount);
     }
     
-    // Vote button (for votable songs only)
+    // Radio button (for votable songs only)
     if (song.state === 'votable') {
-        const button = document.createElement('button');
-        button.className = 'vote-button';
-        button.textContent = hasUserVoted(song.number) ? 'You Voted for This!' : 'Vote for This Song';
-        button.disabled = hasUserVoted(song.number) && !CONFIG.display.allowMultipleVotes;
-        button.onclick = () => handleVote(song.number);
-        div.appendChild(button);
+        const radioContainer = document.createElement('div');
+        radioContainer.className = 'radio-container';
+        
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'songVote';
+        radio.id = `song-${song.number}`;
+        radio.value = song.number;
+        radio.className = 'song-radio';
+        radio.disabled = hasUserVoted(song.number) && !CONFIG.display.allowMultipleVotes;
+        
+        const label = document.createElement('label');
+        label.htmlFor = `song-${song.number}`;
+        label.className = 'radio-label';
+        label.textContent = hasUserVoted(song.number) ? 'You Voted for This!' : 'Select This Song';
+        
+        radioContainer.appendChild(radio);
+        radioContainer.appendChild(label);
+        div.appendChild(radioContainer);
     }
     
     return div;
 }
 
-// Handle vote submission
+// Handle vote submission with confirmation
 async function handleVote(songNumber) {
     // Check if already voted and multiple votes not allowed
     if (hasUserVoted(songNumber) && !CONFIG.display.allowMultipleVotes) {
@@ -170,10 +196,20 @@ async function handleVote(songNumber) {
         return;
     }
     
+    // Get song details
+    const song = CONFIG.songs.find(s => s.number === songNumber);
+    if (!song) return;
+    
+    // Show confirmation dialog
+    const confirmed = confirm(`Are you sure you want to vote for "${song.title}"?\n\nYou can only vote once per voting period.`);
+    
+    if (!confirmed) {
+        return; // User cancelled
+    }
+    
     try {
         // Get song title for Firebase key
-        const song = CONFIG.songs.find(s => s.number === songNumber);
-        const songKey = song ? song.title.replace(/[.#$[\]]/g, '_').replace(/\s+/g, '_') : `song_${songNumber}`;
+        const songKey = song.title.replace(/[.#$[\]]/g, '_').replace(/\s+/g, '_');
         
         // Save vote to Firebase
         if (db) {
@@ -191,10 +227,14 @@ async function handleVote(songNumber) {
         if (songElement) {
             songElement.classList.add('voted', 'vote-success');
             
-            const button = songElement.querySelector('.vote-button');
-            if (button) {
-                button.textContent = 'You Voted for This!';
-                button.disabled = !CONFIG.display.allowMultipleVotes;
+            const radio = songElement.querySelector('.song-radio');
+            const label = songElement.querySelector('.radio-label');
+            if (radio) {
+                radio.disabled = !CONFIG.display.allowMultipleVotes;
+                radio.checked = true;
+            }
+            if (label) {
+                label.textContent = 'You Voted for This!';
             }
             
             const status = songElement.querySelector('.song-status');
@@ -209,11 +249,32 @@ async function handleVote(songNumber) {
             }, 500);
         }
         
+        // Disable submit button and show success message
+        const submitButton = document.getElementById('submitVoteButton');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Vote Submitted! ✓';
+        }
+        
         console.log(`Vote recorded for ${song.title}`);
+        alert(`Thank you! Your vote for "${song.title}" has been recorded.`);
     } catch (error) {
         console.error('Error recording vote:', error);
         alert('There was an error recording your vote. Please try again.');
     }
+}
+
+// Handle submit button click
+function handleSubmitVote() {
+    const selectedRadio = document.querySelector('input[name="songVote"]:checked');
+    
+    if (!selectedRadio) {
+        alert('Please select a song before submitting your vote.');
+        return;
+    }
+    
+    const songNumber = parseInt(selectedRadio.value);
+    handleVote(songNumber);
 }
 
 // Load vote counts from Firebase
