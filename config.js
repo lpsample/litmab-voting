@@ -5,15 +5,14 @@
 
 const CONFIG = {
     // Firebase Configuration
-    // Replace these with your Firebase project credentials
     firebase: {
-        apiKey: "YOUR_FIREBASE_API_KEY",
-        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT_ID.appspot.com",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        apiKey: "AIzaSyDOd-hZOFz-bDj7cg6U_o_bYECjogQ3CiY",
+        authDomain: "litmab-voting.firebaseapp.com",
+        databaseURL: "https://litmab-voting-default-rtdb.firebaseio.com",
+        projectId: "litmab-voting",
+        storageBucket: "litmab-voting.firebasestorage.app",
+        messagingSenderId: "905700324179",
+        appId: "1:905700324179:web:c8caee05d0c9662afde7a6"
     },
 
     // Voting Period Configuration
