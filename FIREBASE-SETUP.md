@@ -12,11 +12,20 @@ This guide will help you set up Firebase for your album voting website to enable
 
 ## Step 2: Register Your Web App
 
-1. In your Firebase project dashboard, click the **Web icon** (`</>`) to add a web app
-2. Give your app a nickname (e.g., "Album Voting Site")
-3. **Do NOT** check "Also set up Firebase Hosting" (we're using Squarespace)
-4. Click "Register app"
-5. You'll see your Firebase configuration object - **copy this**, you'll need it soon
+1. In your Firebase project dashboard, look for the **"Get started by adding Firebase to your app"** section
+2. You'll see three icons: iOS (Apple), Android, and **Web** (looks like `</>` or code brackets)
+3. Click the **Web icon** (the `</>` symbol)
+4. Give your app a nickname (e.g., "Album Voting Site")
+5. **Do NOT** check "Also set up Firebase Hosting" (we're using GitHub Pages/Squarespace)
+6. Click "Register app"
+7. You'll see your Firebase configuration object - **copy this**, you'll need it soon
+
+**Can't find the Web icon?**
+- Look in the center of your Firebase Console homepage
+- It's in the "Get started" section
+- If you don't see it, click "Project Overview" in the left sidebar
+- Then look for "Add app" or the platform icons
+- The web icon looks like: `</>`
 
 The config will look like this:
 ```javascript
