@@ -1,0 +1,391 @@
+// ============================================
+// ALBUM VOTING APPLICATION
+// ============================================
+
+let db = null;
+let userVotes = {};
+
+// Initialize Firebase
+function initFirebase() {
+    try {
+        firebase.initializeApp(CONFIG.firebase);
+        db = firebase.database();
+        console.log('Firebase initialized successfully');
+        return true;
+    } catch (error) {
+        console.error('Firebase initialization error:', error);
+        return false;
+    }
+}
+
+// Initialize the application
+function init() {
+    const firebaseInitialized = initFirebase();
+    
+    if (!firebaseInitialized) {
+        console.warn('Running in demo mode without Firebase');
+    }
+    
+    // Set album art if configured
+    const albumArtEl = document.getElementById('albumArt');
+    if (albumArtEl && CONFIG.albumArtPath) {
+        albumArtEl.src = CONFIG.albumArtPath;
+    }
+    
+    loadUserVotes();
+    renderSongs();
+    updateVotingPeriodDisplay();
+    
+    if (CONFIG.display.showCountdown) {
+        startCountdown();
+    }
+    
+    if (firebaseInitialized) {
+        listenToVoteUpdates();
+    }
+}
+
+// Load user's previous votes from localStorage
+function loadUserVotes() {
+    const stored = localStorage.getItem('albumVotes');
+    if (stored) {
+        try {
+            userVotes = JSON.parse(stored);
+        } catch (e) {
+            userVotes = {};
+        }
+    }
+}
+
+// Save user's vote to localStorage
+function saveUserVote(songNumber) {
+    userVotes[songNumber] = true;
+    localStorage.setItem('albumVotes', JSON.stringify(userVotes));
+}
+
+// Check if user has already voted for a song
+function hasUserVoted(songNumber) {
+    return userVotes[songNumber] === true;
+}
+
+// Render all songs
+function renderSongs() {
+    const tracklist = document.getElementById('tracklist');
+    tracklist.innerHTML = '';
+    
+    CONFIG.songs.forEach(song => {
+        const songElement = createSongElement(song);
+        tracklist.appendChild(songElement);
+    });
+    
+    // Load vote counts if Firebase is available
+    if (db && CONFIG.display.showVoteCounts) {
+        loadVoteCounts();
+    }
+}
+
+// Create a song element
+function createSongElement(song) {
+    const div = document.createElement('div');
+    div.className = `song-item ${song.state}`;
+    div.dataset.songNumber = song.number;
+    
+    // Check if user has voted
+    if (hasUserVoted(song.number) && song.state === 'votable') {
+        div.classList.add('voted');
+    }
+    
+    // Song header
+    const header = document.createElement('div');
+    header.className = 'song-header';
+    
+    const number = document.createElement('div');
+    number.className = 'song-number';
+    number.textContent = song.number;
+    
+    const title = document.createElement('div');
+    title.className = 'song-title';
+    title.textContent = song.title;
+    
+    const status = document.createElement('div');
+    status.className = `song-status status-${song.state}`;
+    
+    if (song.state === 'released') {
+        status.textContent = 'Out Now';
+    } else if (song.state === 'votable') {
+        status.textContent = hasUserVoted(song.number) ? 'Voted' : 'Vote';
+    } else if (song.state === 'locked') {
+        status.innerHTML = 'Locked 🔒';
+    }
+    
+    header.appendChild(number);
+    header.appendChild(title);
+    header.appendChild(status);
+    div.appendChild(header);
+    
+    // Lyric tooltip
+    if (song.lyricPreview) {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'lyric-tooltip';
+        tooltip.textContent = `"${song.lyricPreview}"`;
+        div.appendChild(tooltip);
+    }
+    
+    // Vote count (if enabled and votable)
+    if (CONFIG.display.showVoteCounts && song.state === 'votable') {
+        const voteCount = document.createElement('div');
+        voteCount.className = 'vote-count';
+        voteCount.innerHTML = `
+            <span class="vote-number" data-song="${song.number}">0 votes</span>
+            <div class="vote-bar">
+                <div class="vote-bar-fill" data-song="${song.number}" style="width: 0%"></div>
+            </div>
+        `;
+        div.appendChild(voteCount);
+    }
+    
+    // Vote button (for votable songs only)
+    if (song.state === 'votable') {
+        const button = document.createElement('button');
+        button.className = 'vote-button';
+        button.textContent = hasUserVoted(song.number) ? 'You Voted for This!' : 'Vote for This Song';
+        button.disabled = hasUserVoted(song.number) && !CONFIG.display.allowMultipleVotes;
+        button.onclick = () => handleVote(song.number);
+        div.appendChild(button);
+    }
+    
+    return div;
+}
+
+// Handle vote submission
+async function handleVote(songNumber) {
+    // Check if already voted and multiple votes not allowed
+    if (hasUserVoted(songNumber) && !CONFIG.display.allowMultipleVotes) {
+        return;
+    }
+    
+    // Check if voting period is active
+    if (!isVotingPeriodActive()) {
+        alert('Voting period is not currently active.');
+        return;
+    }
+    
+    try {
+        // Save vote to Firebase
+        if (db) {
+            const voteRef = db.ref(`votes/song_${songNumber}`);
+            await voteRef.transaction((currentVotes) => {
+                return (currentVotes || 0) + 1;
+            });
+        }
+        
+        // Save to localStorage
+        saveUserVote(songNumber);
+        
+        // Update UI
+        const songElement = document.querySelector(`[data-song-number="${songNumber}"]`);
+        if (songElement) {
+            songElement.classList.add('voted', 'vote-success');
+            
+            const button = songElement.querySelector('.vote-button');
+            if (button) {
+                button.textContent = 'You Voted for This!';
+                button.disabled = !CONFIG.display.allowMultipleVotes;
+            }
+            
+            const status = songElement.querySelector('.song-status');
+            if (status) {
+                status.textContent = 'Voted';
+                status.className = 'song-status status-voted';
+            }
+            
+            // Remove animation class after animation completes
+            setTimeout(() => {
+                songElement.classList.remove('vote-success');
+            }, 500);
+        }
+        
+        console.log(`Vote recorded for song ${songNumber}`);
+    } catch (error) {
+        console.error('Error recording vote:', error);
+        alert('There was an error recording your vote. Please try again.');
+    }
+}
+
+// Load vote counts from Firebase
+function loadVoteCounts() {
+    if (!db) return;
+    
+    const votesRef = db.ref('votes');
+    votesRef.once('value', (snapshot) => {
+        const votes = snapshot.val() || {};
+        updateVoteDisplay(votes);
+    });
+}
+
+// Listen to real-time vote updates
+function listenToVoteUpdates() {
+    if (!db) return;
+    
+    const votesRef = db.ref('votes');
+    votesRef.on('value', (snapshot) => {
+        const votes = snapshot.val() || {};
+        updateVoteDisplay(votes);
+    });
+}
+
+// Update vote count display
+function updateVoteDisplay(votes) {
+    // Calculate total votes for percentage
+    let totalVotes = 0;
+    CONFIG.songs.forEach(song => {
+        if (song.state === 'votable') {
+            totalVotes += votes[`song_${song.number}`] || 0;
+        }
+    });
+    
+    // Update each song's vote display
+    CONFIG.songs.forEach(song => {
+        if (song.state === 'votable') {
+            const voteCount = votes[`song_${song.number}`] || 0;
+            const percentage = totalVotes > 0 ? (voteCount / totalVotes * 100) : 0;
+            
+            const voteNumberEl = document.querySelector(`.vote-number[data-song="${song.number}"]`);
+            if (voteNumberEl) {
+                voteNumberEl.textContent = `${voteCount} vote${voteCount !== 1 ? 's' : ''}`;
+            }
+            
+            const voteBarEl = document.querySelector(`.vote-bar-fill[data-song="${song.number}"]`);
+            if (voteBarEl) {
+                voteBarEl.style.width = `${percentage}%`;
+            }
+        }
+    });
+}
+
+// Update voting period display
+function updateVotingPeriodDisplay() {
+    const periodDates = document.getElementById('periodDates');
+    const nextReleaseSong = document.getElementById('nextReleaseSong');
+    const nextReleaseDate = document.getElementById('nextReleaseDate');
+    
+    const startDate = new Date(CONFIG.votingPeriod.start);
+    const endDate = new Date(CONFIG.votingPeriod.end);
+    const releaseDate = new Date(CONFIG.votingPeriod.nextRelease);
+    
+    const formatOptions = { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' };
+    
+    periodDates.textContent = `${startDate.toLocaleDateString('en-US', formatOptions)} - ${endDate.toLocaleDateString('en-US', formatOptions)}`;
+    
+    // Update next release info
+    if (nextReleaseSong) {
+        nextReleaseSong.textContent = CONFIG.nextReleaseSongTitle || 'Go Go Go';
+    }
+    if (nextReleaseDate) {
+        nextReleaseDate.textContent = `${releaseDate.toLocaleDateString('en-US', formatOptions)} at Midnight EST`;
+    }
+    
+    // Start release countdown
+    startReleaseCountdown();
+}
+
+// Start countdown to next release (midnight EST)
+function startReleaseCountdown() {
+    updateReleaseCountdown();
+    setInterval(updateReleaseCountdown, 1000);
+}
+
+// Update release countdown display
+function updateReleaseCountdown() {
+    const countdownEl = document.getElementById('releaseCountdown');
+    if (!countdownEl) return;
+    
+    const releaseDate = new Date(CONFIG.votingPeriod.nextRelease);
+    const now = new Date();
+    const diff = releaseDate - now;
+    
+    if (diff <= 0) {
+        countdownEl.textContent = '🎉 OUT NOW! 🎉';
+        countdownEl.style.fontSize = '1.8rem';
+        return;
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    let timeString = '';
+    if (days > 0) timeString += `${days}d `;
+    if (hours > 0 || days > 0) timeString += `${hours}h `;
+    if (minutes > 0 || hours > 0 || days > 0) timeString += `${minutes}m `;
+    timeString += `${seconds}s`;
+    
+    countdownEl.textContent = timeString;
+}
+
+// Check if voting period is active
+function isVotingPeriodActive() {
+    const now = new Date();
+    const start = new Date(CONFIG.votingPeriod.start);
+    const end = new Date(CONFIG.votingPeriod.end);
+    
+    return now >= start && now <= end;
+}
+
+// Start countdown timer
+function startCountdown() {
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+
+// Update countdown display
+function updateCountdown() {
+    const countdownEl = document.getElementById('countdown');
+    const now = new Date();
+    const start = new Date(CONFIG.votingPeriod.start);
+    const end = new Date(CONFIG.votingPeriod.end);
+    const release = new Date(CONFIG.votingPeriod.nextRelease);
+    
+    let targetDate, message;
+    
+    if (now < start) {
+        targetDate = start;
+        message = 'Voting starts in: ';
+    } else if (now >= start && now <= end) {
+        targetDate = end;
+        message = 'Voting ends in: ';
+    } else {
+        targetDate = release;
+        message = 'Next release in: ';
+    }
+    
+    const diff = targetDate - now;
+    
+    if (diff <= 0) {
+        countdownEl.textContent = 'Voting period has ended. Check back soon!';
+        return;
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    let timeString = '';
+    if (days > 0) timeString += `${days}d `;
+    if (hours > 0 || days > 0) timeString += `${hours}h `;
+    if (minutes > 0 || hours > 0 || days > 0) timeString += `${minutes}m `;
+    timeString += `${seconds}s`;
+    
+    countdownEl.textContent = message + timeString;
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+
+// Made with Bob

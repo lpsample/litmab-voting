@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Release Voting</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <!-- Album Art -->
+            <div class="album-art-container">
+                <img src="album-art.jpg" alt="Album Art" class="album-art" id="albumArt">
+            </div>
+            
+            <h1>Vote for the Next Release</h1>
+            
+            <!-- Next Release Countdown -->
+            <div class="next-release-section" id="nextReleaseSection">
+                <h2 class="next-release-title">Next Release</h2>
+                <div class="next-release-song" id="nextReleaseSong">Go Go Go</div>
+                <div class="next-release-date" id="nextReleaseDate">July 17, 2026 at Midnight EST</div>
+                <div class="release-countdown" id="releaseCountdown"></div>
+            </div>
+            
+            <!-- Voting Period Info -->
+            <div class="voting-period" id="votingPeriod">
+                <p>Voting Period: <span id="periodDates">June 17 - July 1, 2026</span></p>
+            </div>
+            <div class="countdown" id="countdown"></div>
+        </header>
+
+        <main>
+            <div class="tracklist" id="tracklist">
+                <!-- Songs will be dynamically generated here -->
+            </div>
+        </main>
+
+        <footer>
+            <p>Click on any votable song to cast your vote. Hover over songs to preview lyrics.</p>
+        </footer>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    
+    <!-- Main Application -->
+    <script src="voting.js"></script>
+</body>
+</html>
