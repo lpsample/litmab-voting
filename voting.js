@@ -91,9 +91,52 @@ function renderSongs() {
         tracklist.appendChild(songElement);
     });
     
+    // Add mobile tap handlers for lyric previews
+    addMobileLyricHandlers();
+    
     // Load vote counts if Firebase is available
     if (db && CONFIG.display.showVoteCounts) {
         loadVoteCounts();
+    }
+}
+
+// Add tap handlers for mobile lyric previews
+function addMobileLyricHandlers() {
+    // Only add for touch devices
+    if ('ontouchstart' in window) {
+        const songItems = document.querySelectorAll('.song-item');
+        
+        songItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Don't trigger if clicking radio button or label
+                if (e.target.classList.contains('song-radio') ||
+                    e.target.classList.contains('radio-label')) {
+                    return;
+                }
+                
+                // Toggle lyric display
+                const wasShowing = this.classList.contains('show-lyric');
+                
+                // Hide all other lyrics
+                document.querySelectorAll('.song-item').forEach(s => {
+                    s.classList.remove('show-lyric');
+                });
+                
+                // Toggle this one
+                if (!wasShowing) {
+                    this.classList.add('show-lyric');
+                }
+            });
+        });
+        
+        // Close lyric when tapping outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.song-item')) {
+                document.querySelectorAll('.song-item').forEach(s => {
+                    s.classList.remove('show-lyric');
+                });
+            }
+        });
     }
 }
 
@@ -256,8 +299,12 @@ async function handleVote(songNumber) {
             submitButton.textContent = 'Vote Submitted! ✓';
         }
         
+        // Get next release date
+        const nextReleaseDate = new Date(CONFIG.votingPeriod.nextRelease);
+        const releaseMonth = nextReleaseDate.toLocaleDateString('en-US', { month: 'long', timeZone: 'America/New_York' });
+        
         console.log(`Vote recorded for ${song.title}`);
-        alert(`Thank you! Your vote for "${song.title}" has been recorded.`);
+        alert(`Thank you! Your vote for "${song.title}" has been recorded.\n\nThe next release will be on the 17th of ${releaseMonth}!`);
     } catch (error) {
         console.error('Error recording vote:', error);
         alert('There was an error recording your vote. Please try again.');
