@@ -171,9 +171,13 @@ async function handleVote(songNumber) {
     }
     
     try {
+        // Get song title for Firebase key
+        const song = CONFIG.songs.find(s => s.number === songNumber);
+        const songKey = song ? song.title.replace(/[.#$[\]]/g, '_').replace(/\s+/g, '_') : `song_${songNumber}`;
+        
         // Save vote to Firebase
         if (db) {
-            const voteRef = db.ref(`votes/song_${songNumber}`);
+            const voteRef = db.ref(`votes/${songKey}`);
             await voteRef.transaction((currentVotes) => {
                 return (currentVotes || 0) + 1;
             });
@@ -205,7 +209,7 @@ async function handleVote(songNumber) {
             }, 500);
         }
         
-        console.log(`Vote recorded for song ${songNumber}`);
+        console.log(`Vote recorded for ${song.title}`);
     } catch (error) {
         console.error('Error recording vote:', error);
         alert('There was an error recording your vote. Please try again.');
@@ -240,14 +244,16 @@ function updateVoteDisplay(votes) {
     let totalVotes = 0;
     CONFIG.songs.forEach(song => {
         if (song.state === 'votable') {
-            totalVotes += votes[`song_${song.number}`] || 0;
+            const songKey = song.title.replace(/[.#$[\]]/g, '_').replace(/\s+/g, '_');
+            totalVotes += votes[songKey] || 0;
         }
     });
     
     // Update each song's vote display
     CONFIG.songs.forEach(song => {
         if (song.state === 'votable') {
-            const voteCount = votes[`song_${song.number}`] || 0;
+            const songKey = song.title.replace(/[.#$[\]]/g, '_').replace(/\s+/g, '_');
+            const voteCount = votes[songKey] || 0;
             const percentage = totalVotes > 0 ? (voteCount / totalVotes * 100) : 0;
             
             const voteNumberEl = document.querySelector(`.vote-number[data-song="${song.number}"]`);
