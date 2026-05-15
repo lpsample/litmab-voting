@@ -17,11 +17,11 @@ const CONFIG = {
     },
 
     // Voting Period Configuration
-    // TESTING MODE: Set to current time for testing
+    // TESTING MODE: Active NOW for testing
     votingPeriod: {
-        start: "2026-05-15T11:00:00-04:00",  // Testing: Active now
-        end: "2026-05-15T23:59:59-04:00",     // Testing: Ends tonight
-        nextRelease: "2026-05-16T00:00:00-04:00"  // Testing: Tomorrow at midnight EST
+        start: "2026-05-15T14:00:00-04:00",  // Testing: Active now (2pm EST)
+        end: "2026-05-20T23:59:59-04:00",     // Testing: Ends May 20
+        nextRelease: "2026-05-21T00:00:00-04:00"  // Testing: May 21 at midnight EST
     },
     
     // PRODUCTION DATES (uncomment these and comment out testing dates above when ready):
@@ -35,7 +35,7 @@ const CONFIG = {
     nextReleaseSongTitle: "Go Go Go",
     
     // Album Art Path (relative to HTML file or full URL)
-    albumArtPath: "album-art.jpg",
+    albumArtPath: "assets/album-art.jpg",
 
     // Song Configuration
     // Track list in order with their states and lyric previews
