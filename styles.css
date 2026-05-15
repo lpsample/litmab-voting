@@ -53,6 +53,62 @@ h1 {
     background-clip: text;
 }
 
+/* Introduction Message */
+.intro-message {
+    margin: 25px 0;
+    padding: 20px;
+    background: rgba(59, 130, 246, 0.05);
+    border-left: 4px solid #3b82f6;
+    border-radius: 8px;
+    line-height: 1.6;
+}
+
+.intro-message p {
+    margin-bottom: 12px;
+    color: #e5e7eb;
+}
+
+.intro-message strong {
+    color: #60a5fa;
+    font-weight: 700;
+}
+
+.signature {
+    font-style: italic;
+    color: #93c5fd;
+    margin-top: 15px;
+    text-align: right;
+}
+
+/* Voting Instructions */
+.voting-instructions {
+    margin: 25px 0;
+    padding: 20px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 2px solid #10b981;
+    border-radius: 10px;
+}
+
+.voting-instructions h3 {
+    color: #60a5fa;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.voting-instructions ol {
+    margin-left: 20px;
+    color: #e5e7eb;
+    line-height: 1.8;
+}
+
+.voting-instructions li {
+    margin-bottom: 8px;
+}
+
+.voting-instructions strong {
+    color: #10b981;
+}
+
 /* Next Release Section */
 .next-release-section {
     margin: 30px 0;
