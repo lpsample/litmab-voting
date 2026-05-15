@@ -299,12 +299,8 @@ async function handleVote(songNumber) {
             submitButton.textContent = 'Vote Submitted! ✓';
         }
         
-        // Get next release date
-        const nextReleaseDate = new Date(CONFIG.votingPeriod.nextRelease);
-        const releaseMonth = nextReleaseDate.toLocaleDateString('en-US', { month: 'long', timeZone: 'America/New_York' });
-        
         console.log(`Vote recorded for ${song.title}`);
-        alert(`Thank you! Your vote for "${song.title}" has been recorded.\n\nThe next release will be on the 17th of ${releaseMonth}!`);
+        alert(`Thank you! Your vote for "${song.title}" has been recorded.\n\nThe next release will be on the 17th!`);
     } catch (error) {
         console.error('Error recording vote:', error);
         alert('There was an error recording your vote. Please try again.');

@@ -248,9 +248,9 @@ h1 {
 }
 
 .song-item.voted {
-    border-color: #c0c0c0;
-    background: linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(255, 255, 255, 0.05));
-    box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+    border-color: #a78bfa;
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(139, 92, 246, 0.15));
+    box-shadow: 0 0 20px rgba(167, 139, 250, 0.5), 0 0 40px rgba(167, 139, 250, 0.3);
 }
 
 /* Song Header */
@@ -302,10 +302,11 @@ h1 {
 }
 
 .status-voted {
-    background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
-    color: #000000;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(192, 192, 192, 0.4);
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 2px 12px rgba(167, 139, 250, 0.6), 0 0 20px rgba(167, 139, 250, 0.4);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 /* Lock Icon */

@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Release Voting</title>
+    <style>
+/* Mobile/Desktop Instructions Toggle */
+.mobile-instruction {
+    display: none;
+}
+
+.desktop-instruction {
+    display: inline;
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .mobile-instruction {
+        display: inline;
+    }
+    
+    .desktop-instruction {
+        display: none;
+    }
+}
+
+/* Radio Button Styles */
+.radio-container {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.song-radio {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #3b82f6;
+}
+
+.song-radio:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.radio-label {
+    font-size: 0.95rem;
+    color: #e5e7eb;
+    cursor: pointer;
+    user-select: none;
+}
+
+.song-radio:disabled + .radio-label {
+    cursor: not-allowed;
+    color: #9ca3af;
+}
+
+/* Submit Vote Button */
+.submit-container {
+    margin: 40px 0 20px 0;
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    border: 2px solid #1e3a8a;
+}
+
+.submit-vote-button {
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    color: white;
+    border: none;
+    padding: 18px 50px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.submit-vote-button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2563eb, #1e3a8a);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+.submit-vote-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.submit-vote-button:disabled {
+    background: linear-gradient(135deg, #4b5563, #374151);
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #000000 0%, #1e3a8a 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: 100px;
+}
+
+/* Header Styles */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    border: 2px solid #1e3a8a;
+}
+
+/* Album Art */
+.album-art-container {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.album-art {
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    border: 3px solid #1e3a8a;
+    box-shadow: 0 8px 30px rgba(30, 58, 138, 0.5);
+    object-fit: cover;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Introduction Message */
+.intro-message {
+    margin: 25px 0;
+    padding: 20px;
+    background: rgba(59, 130, 246, 0.05);
+    border-left: 4px solid #3b82f6;
+    border-radius: 8px;
+    line-height: 1.6;
+}
+
+.intro-message p {
+    margin-bottom: 12px;
+    color: #e5e7eb;
+}
+
+.intro-message strong {
+    color: #60a5fa;
+    font-weight: 700;
+}
+
+.signature {
+    font-style: italic;
+    color: #93c5fd;
+    margin-top: 15px;
+    text-align: right;
+}
+
+/* Voting Instructions */
+.voting-instructions {
+    margin: 25px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(139, 92, 246, 0.1));
+    border: 2px solid #a78bfa;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.4), 0 0 30px rgba(167, 139, 250, 0.2);
+}
+
+.voting-instructions h3 {
+    color: #c4b5fd;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    text-shadow: 0 0 15px rgba(196, 181, 253, 0.6);
+}
+
+.voting-instructions ol {
+    margin-left: 20px;
+    color: #e5e7eb;
+    line-height: 1.8;
+}
+
+.voting-instructions li {
+    margin-bottom: 8px;
+}
+
+.voting-instructions strong {
+    color: #c4b5fd;
+    text-shadow: 0 0 15px rgba(196, 181, 253, 0.8);
+    font-weight: 700;
+}
+
+.pro-tip {
+    margin-top: 15px;
+    padding: 12px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.15));
+    border-left: 3px solid #a78bfa;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    color: #e5e7eb;
+    box-shadow: 0 0 15px rgba(167, 139, 250, 0.3);
+}
+
+.pro-tip strong {
+    color: #c4b5fd;
+    text-shadow: 0 0 15px rgba(196, 181, 253, 0.8);
+}
+
+/* Next Release Section */
+.next-release-section {
+    margin: 30px 0;
+    padding: 25px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 2px solid #3b82f6;
+    border-radius: 12px;
+}
+
+.next-release-title {
+    font-size: 1.2rem;
+    color: #93c5fd;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.next-release-song {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #60a5fa;
+    margin-bottom: 8px;
+}
+
+.next-release-date {
+    font-size: 1.1rem;
+    color: #93c5fd;
+    margin-bottom: 15px;
+}
+
+.release-countdown {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3b82f6;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.voting-period {
+    margin: 20px 0;
+    font-size: 1.1rem;
+}
+
+.voting-period p {
+    margin: 8px 0;
+}
+
+.voting-period span {
+    color: #60a5fa;
+    font-weight: bold;
+}
+
+.countdown {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    color: #93c5fd;
+}
+
+/* Tracklist Styles */
+.tracklist {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.song-item {
+    position: relative;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #1e3a8a;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.song-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
+}
+
+/* Song States */
+.song-item.released {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.song-item.released:hover {
+    border-color: #60a5fa;
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.6);
+}
+
+.song-item.votable {
+    border-color: #1e3a8a;
+    cursor: pointer;
+}
+
+.song-item.votable:hover {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.15);
+}
+
+.song-item.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #374151;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.song-item.locked:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.song-item.voted {
+    border-color: #a78bfa;
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(139, 92, 246, 0.15));
+    box-shadow: 0 0 20px rgba(167, 139, 250, 0.5), 0 0 40px rgba(167, 139, 250, 0.3);
+}
+
+/* Song Header */
+.song-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.song-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #60a5fa;
+    min-width: 40px;
+}
+
+.song-title {
+    flex: 1;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0 15px;
+}
+
+.song-status {
+    font-size: 0.85rem;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-released {
+    background: #3b82f6;
+    color: #ffffff;
+}
+
+.status-votable {
+    background: rgba(59, 130, 246, 0.3);
+    color: #93c5fd;
+    border: 1px solid #3b82f6;
+}
+
+.status-locked {
+    background: rgba(55, 65, 81, 0.5);
+    color: #9ca3af;
+    border: 1px solid #374151;
+}
+
+.status-voted {
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 2px 12px rgba(167, 139, 250, 0.6), 0 0 20px rgba(167, 139, 250, 0.4);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Vote Count */
+.vote-count {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #93c5fd;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.vote-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(59, 130, 246, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.vote-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+/* Lyric Tooltip */
+.lyric-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid #3b82f6;
+    border-radius: 8px;
+    padding: 15px 20px;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #93c5fd;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+    max-width: 90%;
+    white-space: normal;
+    text-align: center;
+}
+
+.lyric-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: #3b82f6;
+}
+
+/* Desktop: Show on hover */
+@media (hover: hover) and (pointer: fine) {
+    .song-item:hover .lyric-tooltip {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-15px);
+    }
+}
+
+/* Mobile: Show on tap/active state */
+.song-item.show-lyric .lyric-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-15px);
+}
+
+/* Mobile: Add tap indicator */
+@media (hover: none) and (pointer: coarse) {
+    .song-title::after {
+        content: ' 👆';
+        font-size: 0.8em;
+        opacity: 0.6;
+    }
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #93c5fd;
+    font-size: 0.95rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .album-art {
+        width: 250px;
+        height: 250px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .next-release-song {
+        font-size: 1.5rem;
+    }
+    
+    .release-countdown {
+        font-size: 1.2rem;
+    }
+    
+    .song-header {
+        flex-wrap: wrap;
+    }
+    
+    .song-number {
+        font-size: 1.2rem;
+    }
+    
+    .song-title {
+        font-size: 1.1rem;
+        margin: 0 10px;
+    }
+    
+    .song-status {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+    }
+    
+    .lyric-tooltip {
+        font-size: 0.85rem;
+        padding: 12px 15px;
+        max-width: 85%;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    header {
+        padding: 20px 15px;
+    }
+    
+    .album-art {
+        width: 200px;
+        height: 200px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    .next-release-title {
+        font-size: 1rem;
+    }
+    
+    .next-release-song {
+        font-size: 1.3rem;
+    }
+    
+    .next-release-date {
+        font-size: 0.95rem;
+    }
+    
+    .release-countdown {
+        font-size: 1rem;
+        padding: 12px;
+    }
+    
+    .voting-period {
+        font-size: 0.95rem;
+    }
+    
+    .song-item {
+        padding: 15px;
+    }
+    
+    .song-title {
+        font-size: 1rem;
+    }
+}
+
+/* Animation for vote confirmation */
+@keyframes voteSuccess {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.vote-success {
+    animation: voteSuccess 0.5s ease;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <!-- Album Art -->
+            <div class="album-art-container">
+                <img src="assets/album-art.jpg" alt="Album Art" class="album-art" id="albumArt">
+            </div>
+            
+            <h1>Vote for the Next Release</h1>
+            
+            <!-- Introduction Message -->
+            <div class="intro-message">
+                <p>Hi Sammy Whammies! If we haven't met before, my name is Sam Sample, and I'm releasing my 12-track sophomore record, <strong>LOOK IN THE MIRROR AND BEG</strong>, and want YOU to be a part of it! I will be releasing a new song every month on the 17th, and asking you to vote on the next song to come out. Check out the options below with a lyric snippet and choose the one you want to hear next! This album means so much to me and I am over the moon to share it with you.</p>
+                <p class="signature">Love, Sam</p>
+            </div>
+            
+            <!-- Voting Instructions -->
+            <div class="voting-instructions">
+                <h3>How to Vote:</h3>
+                <ol>
+                    <li><strong>Pick your favorite</strong> song from the list below</li>
+                    <li><strong>Click</strong> the radio button next to your choice</li>
+                    <li><strong>Submit</strong> your vote - you can only vote <strong>once per voting period</strong></li>
+                    <li>The song with the most votes will be released <strong>on the 17th of the month!</strong></li>
+                </ol>
+                <p class="pro-tip"><strong>💡 Pro Tip:</strong> <span class="desktop-instruction">Hover over any song title to preview a lyric snippet!</span><span class="mobile-instruction">Tap any song to preview a lyric snippet!</span></p>
+            </div>
+            
+            <!-- Next Release Countdown -->
+            <div class="next-release-section" id="nextReleaseSection">
+                <h2 class="next-release-title">Next Release</h2>
+                <div class="next-release-song" id="nextReleaseSong">Go Go Go</div>
+                <div class="next-release-date" id="nextReleaseDate">July 17, 2026 at Midnight EST</div>
+                <div class="release-countdown" id="releaseCountdown"></div>
+            </div>
+            
+            <!-- Voting Period Info -->
+            <div class="voting-period" id="votingPeriod">
+                <p>Voting Period: <span id="periodDates">June 17 - July 1, 2026</span></p>
+            </div>
+            <div class="countdown" id="countdown"></div>
+        </header>
+
+        <main>
+            <div class="tracklist" id="tracklist">
+                <!-- Songs will be dynamically generated here -->
+            </div>
+            
+            <!-- Submit Vote Button -->
+            <div class="submit-container" id="submitContainer">
+                <button class="submit-vote-button" id="submitVoteButton">Submit My Vote</button>
+            </div>
+        </main>
+
+        <footer>
+            <p><span class="desktop-instruction">Select your favorite song and click "Submit My Vote" below. Hover over songs to preview lyrics.</span><span class="mobile-instruction">Select your favorite song and click "Submit My Vote" below. Tap any song to preview lyrics.</span></p>
+        </footer>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <script>
+// Configuration
+const CONFIG = {
+    firebase: {
+        apiKey: "AIzaSyDOd-hZOFz-bDj7cg6U_o_bYECjogQ3CiY",
+        authDomain: "litmab-voting.firebaseapp.com",
+        databaseURL: "https://litmab-voting-default-rtdb.firebaseio.com",
+        projectId: "litmab-voting",
+        storageBucket: "litmab-voting.firebasestorage.app",
+        messagingSenderId: "905700324179",
+        appId: "1:905700324179:web:c8caee05d0c9662afde7a6"
+    },
+    votingPeriod: {
+        start: "2026-06-17T00:00:00-04:00",
+        end: "2026-07-01T23:59:59-04:00",
+        nextRelease: "2026-07-17T00:00:00-04:00"
+    },
+    nextReleaseSongTitle: "Go Go Go",
+    albumArtPath: "assets/album-art.jpg",
+    songs: [
+        {
+            number: 1,
+            title: "Go Go Go",
+            state: "released",
+            lyricPreview: "Neurons lost their firing pins… my skin breaks out and I get high and overeat"
+        },
+        {
+            number: 2,
+            title: "Let's Get Away",
+            state: "votable",
+            lyricPreview: "Cruel girls they play for winners… Some overfit the model, some plain don't make it out"
+        },
+        {
+            number: 3,
+            title: "Violence",
+            state: "votable",
+            lyricPreview: "You held my wrists up above my head, now I'm wandering through the drug store, I'm full of regret"
+        },
+        {
+            number: 4,
+            title: "Roles",
+            state: "votable",
+            lyricPreview: "Every waking thought, wanna hear it come from your lips. When your mind is wrought, want you to seek my solace"
+        },
+        {
+            number: 5,
+            title: "In Loving Memory",
+            state: "locked",
+            lyricPreview: "Your mother used to worry but she's tired"
+        },
+        {
+            number: 6,
+            title: "Straight Talk",
+            state: "votable",
+            lyricPreview: "Sisyphus was talking shit, but carries on unblind"
+        },
+        {
+            number: 7,
+            title: "XACTO",
+            state: "votable",
+            lyricPreview: "You broke me deep to my core knowing' you're better for, not knowing me anymore"
+        },
+        {
+            number: 8,
+            title: "You're Not Really From Manchester",
+            state: "votable",
+            lyricPreview: "You're workin' the stick shift on the M6"
+        },
+        {
+            number: 9,
+            title: "Tax",
+            state: "votable",
+            lyricPreview: "I guess it's a tax of the times, payment to get out of line, didn't mean to leave behind, your prime just wasn't mine"
+        },
+        {
+            number: 10,
+            title: "Shattered",
+            state: "votable",
+            lyricPreview: "I try to run what I don't understand but it never gets through to me"
+        },
+        {
+            number: 11,
+            title: "Think of Calling",
+            state: "votable",
+            lyricPreview: "Wherever you are I hope you're okay, if you ever come back I hope I have grace"
+        },
+        {
+            number: 12,
+            title: "Glass",
+            state: "locked",
+            lyricPreview: "Try to find a way to get it out, make it better feel less consumed. Guess the lows are part of livin'"
+        }
+    ],
+    display: {
+        showVoteCounts: true,
+        allowMultipleVotes: false,
+        showCountdown: true
+    }
+};
+    </script>
+    
+    <script>
+// Voting Application
+let db = null;
+let userVotes = {};
+
+function initFirebase() {
+    try {
+        firebase.initializeApp(CONFIG.firebase);
+        db = firebase.database();
+        console.log('Firebase initialized successfully');
+        return true;
+    } catch (error) {
+        console.error('Firebase initialization error:', error);
+        return false;
+    }
+}
+
+function init() {
+    const firebaseInitialized = initFirebase();
+    
+    if (!firebaseInitialized) {
+        console.warn('Running in demo mode without Firebase');
+    }
+    
+    const albumArtEl = document.getElementById('albumArt');
+    if (albumArtEl && CONFIG.albumArtPath) {
+        albumArtEl.src = CONFIG.albumArtPath;
+    }
+    
+    loadUserVotes();
+    renderSongs();
+    updateVotingPeriodDisplay();
+    
+    if (CONFIG.display.showCountdown) {
+        startCountdown();
+    }
+    
+    if (firebaseInitialized) {
+        listenToVoteUpdates();
+    }
+    
+    const submitButton = document.getElementById('submitVoteButton');
+    if (submitButton) {
+        submitButton.addEventListener('click', handleSubmitVote);
+        
+        const hasVoted = Object.keys(userVotes).some(key => userVotes[key] === true);
+        if (hasVoted && !CONFIG.display.allowMultipleVotes) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Vote Submitted! ✓';
+        }
+    }
+}
+
+function loadUserVotes() {
+    const stored = localStorage.getItem('albumVotes');
+    if (stored) {
+        try {
+            userVotes = JSON.parse(stored);
+        } catch (e) {
+            userVotes = {};
+        }
+    }
+}
+
+function saveUserVote(songNumber) {
+    userVotes[songNumber] = true;
+    localStorage.setItem('albumVotes', JSON.stringify(userVotes));
+}
+
+function hasUserVoted(songNumber) {
+    return userVotes[songNumber] === true;
+}
+
+function renderSongs() {
+    const tracklist = document.getElementById('tracklist');
+    tracklist.innerHTML = '';
+    
+    CONFIG.songs.forEach(song => {
+        const songElement = createSongElement(song);
+        tracklist.appendChild(songElement);
+    });
+    
+    addMobileLyricHandlers();
+    
+    if (db && CONFIG.display.showVoteCounts) {
+        loadVoteCounts();
+    }
+}
+
+function addMobileLyricHandlers() {
+    if ('ontouchstart' in window) {
+        const songItems = document.querySelectorAll('.song-item');
+        
+        songItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (e.target.classList.contains('song-radio') || 
+                    e.target.classList.contains('radio-label')) {
+                    return;
+                }
+                
+                const wasShowing = this.classList.contains('show-lyric');
+                
+                document.querySelectorAll('.song-item').forEach(s => {
+                    s.classList.remove('show-lyric');
+                });
+                
+                if (!wasShowing) {
+                    this.classList.add('show-lyric');
+                }
+            });
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.song-item')) {
+                document.querySelectorAll('.song-item').forEach(s => {
+                    s.classList.remove('show-lyric');
+                });
+            }
+        });
+    }
+}
+
+function createSongElement(song) {
+    const div = document.createElement('div');
+    div.className = `song-item ${song.state}`;
+    div.dataset.songNumber = song.number;
+    
+    if (hasUserVoted(song.number) && song.state === 'votable') {
+        div.classList.add('voted');
+    }
+    
+    const header = document.createElement('div');
+    header.className = 'song-header';
+    
+    const number = document.createElement('div');
+    number.className = 'song-number';
+    number.textContent = song.number;
+    
+    const title = document.createElement('div');
+    title.className = 'song-title';
+    title.textContent = song.title;
+    
+    const status = document.createElement('div');
+    status.className = `song-status status-${song.state}`;
+    
+    if (song.state === 'released') {
+        status.textContent = 'Out Now';
+    } else if (song.state === 'votable') {
+        status.textContent = hasUserVoted(song.number) ? 'Voted' : 'Vote';
+    } else if (song.state === 'locked') {
+        status.innerHTML = 'Locked 🔒';
+    }
+    
+    header.appendChild(number);
+    header.appendChild(title);
+    header.appendChild(status);
+    div.appendChild(header);
+    
+    if (song.lyricPreview) {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'lyric-tooltip';
+        tooltip.textContent = `"${song.lyricPreview}"`;
+        div.appendChild(tooltip);
+    }
+    
+    if (CONFIG.display.showVoteCounts && song.state === 'votable') {
+        const voteCount = document.createElement('div');
+        voteCount.className = 'vote-count';
+        voteCount.innerHTML = `
+            <span class="vote-number" data-song="${song.number}">0 votes</span>
+            <div class="vote-bar">
+                <div class="vote-bar-fill" data-song="${song.number}" style="width: 0%"></div>
+            </div>
+        `;
+        div.appendChild(voteCount);
+    }
+    
+    if (song.state === 'votable') {
+        const radioContainer = document.createElement('div');
+        radioContainer.className = 'radio-container';
+        
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'songVote';
+        radio.id = `song-${song.number}`;
+        radio.value = song.number;
+        radio.className = 'song-radio';
+        radio.disabled = hasUserVoted(song.number) && !CONFIG.display.allowMultipleVotes;
+        
+        const label = document.createElement('label');
+        label.htmlFor = `song-${song.number}`;
+        label.className = 'radio-label';
+        label.textContent = hasUserVoted(song.number) ? 'You Voted for This!' : 'Select This Song';
+        
+        radioContainer.appendChild(radio);
+        radioContainer.appendChild(label);
+        div.appendChild(radioContainer);
+    }
+    
+    return div;
+}
+
+async function handleVote(songNumber) {
+    if (hasUserVoted(songNumber) && !CONFIG.display.allowMultipleVotes) {
+        return;
+    }
+    
+    if (!isVotingPeriodActive()) {
+        alert('Voting period is not currently active.');
+        return;
+    }
+    
+    const song = CONFIG.songs.find(s => s.number === songNumber);
+    if (!song) return;
+    
+    const confirmed = confirm(`Are you sure you want to vote for "${song.title}"?\n\nYou can only vote once per voting period.`);
+    
+    if (!confirmed) {
+        return;
+    }
+    
+    try {
+        const songKey = song.title.replace(/[.#$[\]]/g, '_').replace(/\s+/g, '_');
+        
+        if (db) {
+            const voteRef = db.ref(`votes/${songKey}`);
+            await voteRef.transaction((currentVotes) => {
+                return (currentVotes || 0) + 1;
+            });
+        }
+        
+        saveUserVote(songNumber);
+        
+        const songElement = document.querySelector(`[data-song-number="${songNumber}"]`);
+        if (songElement) {
+            songElement.classList.add('voted', 'vote-success');
+            
+            const radio = songElement.querySelector('.song-radio');
+            const label = songElement.querySelector('.radio-label');
+            if (radio) {
+                radio.disabled = !CONFIG.display.allowMultipleVotes;
+                radio.checked = true;
+            }
+            if (label) {
+                label.textContent = 'You Voted for This!';
+            }
+            
+            const status = songElement.querySelector('.song-status');
+            if (status) {
+                status.textContent = 'Voted';
+                status.className = 'song-status status-voted';
+            }
+            
+            setTimeout(() => {
+                songElement.classList.remove('vote-success');
+            }, 500);
+        }
+        
+        const submitButton = document.getElementById('submitVoteButton');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Vote Submitted! ✓';
+        }
+        
+        console.log(`Vote recorded for ${song.title}`);
+        alert(`Thank you! Your vote for "${song.title}" has been recorded.\n\nThe next release will be on the 17th!`);
+    } catch (error) {
+        console.error('Error recording vote:', error);
+        alert('There was an error recording your vote. Please try again.');
+    }
+}
+
+function handleSubmitVote() {
+    const selectedRadio = document.querySelector('input[name="songVote"]:checked');
+    
+    if (!selectedRadio) {
+        alert('Please select a song before submitting your vote.');
+        return;
+    }
+    
+    const songNumber = parseInt(selectedRadio.value);
+    handleVote(songNumber);
+}
+
+function loadVoteCounts() {
+    if (!db) return;
+    
+    const votesRef = db.ref('votes');
+    votesRef.once('value', (snapshot) => {
+        const votes = snapshot.val() || {};
+        updateVoteDisplay(votes);
+    });
+}
+
+function listenToVoteUpdates() {
+    if (!db) return;
+    
+    const votesRef = db.ref('votes');
+    votesRef.on('value', (snapshot) => {
+        const votes = snapshot.val() || {};
+        updateVoteDisplay(votes);
+    });
+}
+
+function updateVoteDisplay(votes) {
+    let totalVotes = 0;
+    CONFIG.songs.forEach(song => {
+        if (song.state === 'votable') {
+            const songKey = song.title.replace(/[.#$[\]]/g, '_').replace(/\s+/g, '_');
+            totalVotes += votes[songKey] || 0;
+        }
+    });
+    
+    CONFIG.songs.forEach(song => {
+        if (song.state === 'votable') {
+            const songKey = song.title.replace(/[.#$[\]]/g, '_').replace(/\s+/g, '_');
+            const voteCount = votes[songKey] || 0;
+            const percentage = totalVotes > 0 ? (voteCount / totalVotes * 100) : 0;
+            
+            const voteNumberEl = document.querySelector(`.vote-number[data-song="${song.number}"]`);
+            if (voteNumberEl) {
+                voteNumberEl.textContent = `${voteCount} vote${voteCount !== 1 ? 's' : ''}`;
+            }
+            
+            const voteBarEl = document.querySelector(`.vote-bar-fill[data-song="${song.number}"]`);
+            if (voteBarEl) {
+                voteBarEl.style.width = `${percentage}%`;
+            }
+        }
+    });
+}
+
+function updateVotingPeriodDisplay() {
+    const periodDates = document.getElementById('periodDates');
+    const nextReleaseSong = document.getElementById('nextReleaseSong');
+    const nextReleaseDate = document.getElementById('nextReleaseDate');
+    
+    const startDate = new Date(CONFIG.votingPeriod.start);
+    const endDate = new Date(CONFIG.votingPeriod.end);
+    const releaseDate = new Date(CONFIG.votingPeriod.nextRelease);
+    
+    const formatOptions = { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' };
+    
+    periodDates.textContent = `${startDate.toLocaleDateString('en-US', formatOptions)} - ${endDate.toLocaleDateString('en-US', formatOptions)}`;
+    
+    if (nextReleaseSong) {
+        nextReleaseSong.textContent = CONFIG.nextReleaseSongTitle || 'Go Go Go';
+    }
+    if (nextReleaseDate) {
+        nextReleaseDate.textContent = `${releaseDate.toLocaleDateString('en-US', formatOptions)} at Midnight EST`;
+    }
+    
+    startReleaseCountdown();
+}
+
+function startReleaseCountdown() {
+    updateReleaseCountdown();
+    setInterval(updateReleaseCountdown, 1000);
+}
+
+function updateReleaseCountdown() {
+    const countdownEl = document.getElementById('releaseCountdown');
+    if (!countdownEl) return;
+    
+    const releaseDate = new Date(CONFIG.votingPeriod.nextRelease);
+    const now = new Date();
+    const diff = releaseDate - now;
+    
+    if (diff <= 0) {
+        countdownEl.textContent = '🎉 OUT NOW! 🎉';
+        countdownEl.style.fontSize = '1.8rem';
+        return;
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    let timeString = '';
+    if (days > 0) timeString += `${days}d `;
+    if (hours > 0 || days > 0) timeString += `${hours}h `;
+    if (minutes > 0 || hours > 0 || days > 0) timeString += `${minutes}m `;
+    timeString += `${seconds}s`;
+    
+    countdownEl.textContent = timeString;
+}
+
+function isVotingPeriodActive() {
+    const now = new Date();
+    const start = new Date(CONFIG.votingPeriod.start);
+    const end = new Date(CONFIG.votingPeriod.end);
+    
+    return now >= start && now <= end;
+}
+
+function startCountdown() {
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+
+function updateCountdown() {
+    const countdownEl = document.getElementById('countdown');
+    const now = new Date();
+    const start = new Date(CONFIG.votingPeriod.start);
+    const end = new Date(CONFIG.votingPeriod.end);
+    const release = new Date(CONFIG.votingPeriod.nextRelease);
+    
+    let targetDate, message;
+    
+    if (now < start) {
+        targetDate = start;
+        message = 'Voting starts in: ';
+    } else if (now >= start && now <= end) {
+        targetDate = end;
+        message = 'Voting ends in: ';
+    } else {
+        targetDate = release;
+        message = 'Next release in: ';
+    }
+    
+    const diff = targetDate - now;
+    
+    if (diff <= 0) {
+        countdownEl.textContent = 'Voting period has ended. Check back soon!';
+        return;
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    let timeString = '';
+    if (days > 0) timeString += `${days}d `;
+    if (hours > 0 || days > 0) timeString += `${hours}h `;
+    if (minutes > 0 || hours > 0 || days > 0) timeString += `${minutes}m `;
+    timeString += `${seconds}s`;
+    
+    countdownEl.textContent = message + timeString;
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+    </script>
+</body>
+</html>
