@@ -248,8 +248,9 @@ h1 {
 }
 
 .song-item.voted {
-    border-color: #10b981;
-    background: rgba(16, 185, 129, 0.1);
+    border-color: #c0c0c0;
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(255, 255, 255, 0.05));
+    box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
 }
 
 /* Song Header */
@@ -301,8 +302,10 @@ h1 {
 }
 
 .status-voted {
-    background: #10b981;
-    color: #ffffff;
+    background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
+    color: #000000;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(192, 192, 192, 0.4);
 }
 
 /* Lock Icon */
