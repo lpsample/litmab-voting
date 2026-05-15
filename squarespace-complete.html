@@ -644,7 +644,8 @@ footer {
             
             <!-- Voting Period Info -->
             <div class="voting-period" id="votingPeriod">
-                <p>Voting Period: <span id="periodDates">June 17 - July 1, 2026</span></p>
+                <p><strong>🗳️ Voting Period:</strong> <span id="periodDates">June 17 - July 1, 2026</span></p>
+                <p style="font-size: 0.95rem; color: #93c5fd; margin-top: 8px;">Voting closes <strong>July 1 at Midnight EST</strong></p>
             </div>
             <div class="countdown" id="countdown"></div>
         </header>
@@ -683,7 +684,7 @@ const CONFIG = {
     },
     votingPeriod: {
         start: "2026-06-17T00:00:00-04:00",
-        end: "2026-07-01T23:59:59-04:00",
+        end: "2026-07-01T23:59:59-04:00",  // Voting closes July 1 at Midnight EST
         nextRelease: "2026-07-17T00:00:00-04:00"
     },
     nextReleaseSongTitle: "Go Go Go",
@@ -916,7 +917,20 @@ function createSongElement(song) {
     status.className = `song-status status-${song.state}`;
     
     if (song.state === 'released') {
-        status.textContent = 'Out Now';
+        // Check if release date has passed
+        const releaseDate = new Date(CONFIG.votingPeriod.nextRelease);
+        const now = new Date();
+        if (now >= releaseDate) {
+            status.textContent = 'Out Now';
+        } else {
+            // Show release date
+            const releaseDateStr = releaseDate.toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                timeZone: 'America/New_York'
+            });
+            status.textContent = `Out ${releaseDateStr}`;
+        }
     } else if (song.state === 'votable') {
         status.textContent = hasUserVoted(song.number) ? 'Voted' : 'Vote';
     } else if (song.state === 'locked') {
