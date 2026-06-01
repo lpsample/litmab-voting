@@ -132,6 +132,131 @@ h1 {
     text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
 }
 
+/* AmeriRock Genre Scale Legend */
+.genre-scale-legend {
+    margin: 25px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(124, 58, 237, 0.1));
+    border: 2px solid #8b5cf6;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+}
+
+.genre-scale-legend h3 {
+    color: #c4b5fd;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    text-shadow: 0 0 15px rgba(196, 181, 253, 0.6);
+}
+
+.legend-description {
+    color: #e5e7eb;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.scale-bar-container {
+    position: relative;
+    margin-top: 15px;
+}
+
+.scale-gradient {
+    height: 12px;
+    background: linear-gradient(90deg,
+        #60a5fa 0%,    /* Folk/Americana - light blue */
+        #a78bfa 30%,   /* Indie/Alt - purple */
+        #f472b6 60%,   /* Rock - pink */
+        #8b0000 100%   /* Indie/Alt Rock - dark crimson */
+    );
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(139, 92, 246, 0.4);
+}
+
+.scale-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.scale-left,
+.scale-middle,
+.scale-right {
+    color: #c4b5fd;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+    cursor: help;
+    transition: all 0.3s ease;
+}
+
+.scale-left {
+    text-align: left;
+    flex: 1;
+}
+
+.scale-middle {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.scale-right {
+    text-align: right;
+    flex: 1;
+}
+
+.scale-middle-text {
+    font-size: 0.85rem;
+    color: #c4b5fd;
+}
+
+.scale-sublabel {
+    font-size: 0.75rem;
+    color: #93c5fd;
+    font-weight: 400;
+    font-style: italic;
+    display: block;
+}
+
+.scale-artists {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+    padding: 10px 15px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid #8b5cf6;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #e5e7eb;
+    white-space: nowrap;
+    z-index: 1000;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.scale-label-hover:hover .scale-artists {
+    display: block;
+}
+
+.scale-left .scale-artists {
+    left: 0;
+    transform: translateX(0);
+}
+
+.scale-right .scale-artists {
+    left: auto;
+    right: 0;
+    transform: translateX(0);
+}
+
 /* Next Release Section */
 .next-release-section {
     margin: 30px 0;
@@ -340,51 +465,101 @@ h1 {
     transition: width 0.5s ease;
 }
 
-/* Lyric Tooltip */
-.lyric-tooltip {
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-10px);
-    background: rgba(0, 0, 0, 0.95);
-    border: 2px solid #3b82f6;
-    border-radius: 8px;
-    padding: 15px 20px;
-    font-style: italic;
-    font-size: 0.95rem;
-    color: #93c5fd;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    z-index: 1000;
-    max-width: 90%;
-    white-space: normal;
-    text-align: center;
+/* Combined Lyric & Genre Scale Tooltip */
+.song-item .lyric-tooltip {
+    position: absolute !important;
+    bottom: 100% !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(-10px) !important;
+    background: rgba(0, 0, 0, 0.95) !important;
+    border: 2px solid #3b82f6 !important;
+    border-radius: 8px !important;
+    padding: 15px 20px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.3s ease, transform 0.3s ease !important;
+    z-index: 1000 !important;
+    max-width: 90% !important;
+    min-width: 280px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
 }
 
-.lyric-tooltip::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 8px solid transparent;
-    border-top-color: #3b82f6;
+.song-item .lyric-tooltip::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    border: 8px solid transparent !important;
+    border-top-color: #3b82f6 !important;
+}
+
+.lyric-tooltip .tooltip-lyric {
+    font-style: italic !important;
+    font-size: 0.95rem !important;
+    color: #93c5fd !important;
+    margin-bottom: 12px !important;
+    line-height: 1.4 !important;
+    font-family: inherit !important;
+}
+
+.lyric-tooltip .tooltip-genre-scale {
+    margin-top: 12px !important;
+    padding-top: 12px !important;
+    border-top: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+
+.tooltip-genre-scale .genre-scale-bar {
+    position: relative !important;
+    height: 10px !important;
+    background: linear-gradient(90deg,
+        #60a5fa 0%,
+        #a78bfa 30%,
+        #f472b6 60%,
+        #8b0000 100%
+    ) !important;
+    border-radius: 5px !important;
+    margin-bottom: 8px !important;
+}
+
+.tooltip-genre-scale .genre-scale-marker {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 14px !important;
+    height: 14px !important;
+    background: white !important;
+    border: 3px solid #3b82f6 !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.8) !important;
+}
+
+.tooltip-genre-scale .genre-scale-labels {
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 0.75rem !important;
+    color: #93c5fd !important;
+    font-family: inherit !important;
+}
+
+.tooltip-genre-scale .genre-scale-labels span {
+    color: #93c5fd !important;
+    font-family: inherit !important;
 }
 
 /* Desktop: Show on hover */
 @media (hover: hover) and (pointer: fine) {
     .song-item:hover .lyric-tooltip {
-        opacity: 1;
-        transform: translateX(-50%) translateY(-15px);
+        opacity: 1 !important;
+        transform: translateX(-50%) translateY(-15px) !important;
     }
 }
 
 /* Mobile: Show on tap/active state */
 .song-item.show-lyric .lyric-tooltip {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-15px);
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(-15px) !important;
 }
 
 /* Mobile: Add tap indicator */
@@ -433,6 +608,37 @@ footer {
     padding: 20px;
     color: #93c5fd;
     font-size: 0.95rem;
+}
+
+/* Desktop Grid Layout */
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1400px;
+    }
+    
+    .tracklist {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .song-item {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .vote-count {
+        margin-top: auto;
+    }
+}
+
+/* Large Desktop - 3 Column Grid */
+@media (min-width: 1400px) {
+    .tracklist {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
 }
 
 /* Responsive Design */

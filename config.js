@@ -16,11 +16,11 @@ const CONFIG = {
     },
 
     // Voting Period Configuration
-    // TESTING MODE: Active NOW for testing
+    // ACTIVE NOW
     votingPeriod: {
-        start: "2026-05-15T14:00:00-04:00",  // Testing: Active now (2pm EST)
-        end: "2026-05-20T23:59:59-04:00",     // Testing: Ends May 20
-        nextRelease: "2026-05-21T00:00:00-04:00"  // Testing: May 21 at midnight EST
+        start: "2026-06-01T00:00:00-04:00",  // Active now (June 1)
+        end: "2026-06-15T23:59:59-04:00",     // Ends June 15
+        nextRelease: "2026-06-17T00:00:00-04:00"  // June 17 at midnight EST
     },
     
     // PRODUCTION DATES (uncomment these and comment out testing dates above when ready):
@@ -43,73 +43,85 @@ const CONFIG = {
             number: 1,
             title: "Go Go Go",
             state: "released",  // Options: "released", "votable", "locked"
-            lyricPreview: "Neurons lost their firing pins… my skin breaks out and I get high and overeat"
+            lyricPreview: "Neurons lost their firing pins… my skin breaks out and I get high and overeat",
+            ameriRockScale: 5  // 0=Folk/Americana, 10=Hard Rock
         },
         {
             number: 2,
             title: "Let's Get Away",
             state: "votable",
-            lyricPreview: "Cruel girls they play for winners… Some overfit the model, some plain don't make it out"
+            lyricPreview: "Cruel girls they play for winners… Some overfit the model, some plain don't make it out",
+            ameriRockScale: 1
         },
         {
             number: 3,
             title: "Violence",
             state: "votable",
-            lyricPreview: "You held my wrists up above my head, now I'm wandering through the drug store, I'm full of regret"
+            lyricPreview: "You held my wrists up above my head, now I'm wandering through the drug store, I'm full of regret",
+            ameriRockScale: 4
         },
         {
             number: 4,
             title: "Roles",
             state: "votable",
-            lyricPreview: "Every waking thought, wanna hear it come from your lips. When your mind is wrought, want you to seek my solace"
+            lyricPreview: "Every waking thought, wanna hear it come from your lips. When your mind is wrought, want you to seek my solace",
+            ameriRockScale: 2
         },
         {
             number: 5,
             title: "In Loving Memory",
             state: "locked",  // Permanently locked
-            lyricPreview: "Your mother used to worry but she's tired"
+            lyricPreview: "Your mother used to worry but she's tired",
+            ameriRockScale: 2
         },
         {
             number: 6,
             title: "Straight Talk",
             state: "votable",
-            lyricPreview: "Sisyphus was talking shit, but carries on unblind"
+            lyricPreview: "Sisyphus was talking shit, but carries on unblind",
+            ameriRockScale: 2
         },
         {
             number: 7,
             title: "XACTO",
             state: "votable",
-            lyricPreview: "You broke me deep to my core knowing' you're better for, not knowing me anymore"
+            lyricPreview: "You broke me deep to my core knowing' you're better for, not knowing me anymore",
+            ameriRockScale: 7
         },
         {
             number: 8,
             title: "You're Not Really From Manchester",
             state: "votable",
-            lyricPreview: "You're workin' the stick shift on the M6"
+            lyricPreview: "You're workin' the stick shift on the M6",
+            ameriRockScale: 8
         },
         {
             number: 9,
             title: "Tax",
             state: "votable",
-            lyricPreview: "I guess it's a tax of the times, payment to get out of line, didn't mean to leave behind, your prime just wasn't mine"
+            lyricPreview: "I guess it's a tax of the times, payment to get out of line, didn't mean to leave behind, your prime just wasn't mine",
+            ameriRockScale: 10
         },
         {
             number: 10,
             title: "Shattered",
             state: "votable",
-            lyricPreview: "I try to run what I don't understand but it never gets through to me"
+            lyricPreview: "I try to run what I don't understand but it never gets through to me",
+            ameriRockScale: 9
         },
         {
             number: 11,
             title: "Think of Calling",
             state: "votable",
-            lyricPreview: "Wherever you are I hope you're okay, if you ever come back I hope I have grace"
+            lyricPreview: "Wherever you are I hope you're okay, if you ever come back I hope I have grace",
+            ameriRockScale: 2
         },
         {
             number: 12,
             title: "Glass",
             state: "locked",  // Permanently locked (final song)
-            lyricPreview: "Try to find a way to get it out, make it better feel less consumed. Guess the lows are part of livin'"
+            lyricPreview: "Try to find a way to get it out, make it better feel less consumed. Guess the lows are part of livin'",
+            ameriRockScale: 10
         }
     ],
 

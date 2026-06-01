@@ -100,7 +100,7 @@ function renderSongs() {
     }
 }
 
-// Add tap handlers for mobile lyric previews
+// Add tap handlers for mobile lyric previews and genre scale
 function addMobileLyricHandlers() {
     // Only add for touch devices
     if ('ontouchstart' in window) {
@@ -114,26 +114,29 @@ function addMobileLyricHandlers() {
                     return;
                 }
                 
-                // Toggle lyric display
+                // Toggle lyric and genre display
                 const wasShowing = this.classList.contains('show-lyric');
                 
-                // Hide all other lyrics
+                // Hide all other lyrics and genre scales
                 document.querySelectorAll('.song-item').forEach(s => {
                     s.classList.remove('show-lyric');
+                    s.classList.remove('show-genre');
                 });
                 
-                // Toggle this one
+                // Toggle this one - show both lyric and genre
                 if (!wasShowing) {
                     this.classList.add('show-lyric');
+                    this.classList.add('show-genre');
                 }
             });
         });
         
-        // Close lyric when tapping outside
+        // Close lyric and genre when tapping outside
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.song-item')) {
                 document.querySelectorAll('.song-item').forEach(s => {
                     s.classList.remove('show-lyric');
+                    s.classList.remove('show-genre');
                 });
             }
         });
@@ -179,11 +182,35 @@ function createSongElement(song) {
     header.appendChild(status);
     div.appendChild(header);
     
-    // Lyric tooltip
-    if (song.lyricPreview) {
+    // Combined lyric and genre scale tooltip
+    if (song.lyricPreview || song.ameriRockScale !== undefined) {
         const tooltip = document.createElement('div');
         tooltip.className = 'lyric-tooltip';
-        tooltip.textContent = `"${song.lyricPreview}"`;
+        
+        let tooltipContent = '';
+        
+        // Add lyric preview
+        if (song.lyricPreview) {
+            tooltipContent += `<div class="tooltip-lyric">"${song.lyricPreview}"</div>`;
+        }
+        
+        // Add genre scale (without softer/harder labels)
+        if (song.ameriRockScale !== undefined) {
+            const position = (song.ameriRockScale / 10) * 100;
+            tooltipContent += `
+                <div class="tooltip-genre-scale">
+                    <div class="genre-scale-bar">
+                        <div class="genre-scale-marker" style="left: ${position}%"></div>
+                    </div>
+                    <div class="genre-scale-labels">
+                        <span>Folk/Americana</span>
+                        <span>Indie/Alternative Rock</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        tooltip.innerHTML = tooltipContent;
         div.appendChild(tooltip);
     }
     
