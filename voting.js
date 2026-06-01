@@ -328,9 +328,35 @@ async function handleVote(songNumber) {
         
         console.log(`Vote recorded for ${song.title}`);
         alert(`Thank you! Your vote for "${song.title}" has been recorded.\n\nThe next release will be on the 17th!`);
+        
+        // Show mailing list signup popup
+        showMailingListPopup();
     } catch (error) {
         console.error('Error recording vote:', error);
         alert('There was an error recording your vote. Please try again.');
+    }
+}
+
+// Show mailing list signup popup
+function showMailingListPopup() {
+    const mailingListContainer = document.getElementById('mailingListContainer');
+    if (mailingListContainer) {
+        mailingListContainer.style.display = 'flex';
+        
+        // Set up close button
+        const closeButton = document.getElementById('closeNewsletterButton');
+        if (closeButton) {
+            closeButton.addEventListener('click', function() {
+                mailingListContainer.style.display = 'none';
+            });
+        }
+        
+        // Close on background click
+        mailingListContainer.addEventListener('click', function(e) {
+            if (e.target === mailingListContainer) {
+                mailingListContainer.style.display = 'none';
+            }
+        });
     }
 }
 

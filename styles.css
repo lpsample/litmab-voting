@@ -829,3 +829,78 @@ footer {
     opacity: 0.6;
     box-shadow: none;
 }
+
+/* Mailing List Signup Container */
+.mailing-list-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.9) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 10000 !important;
+    padding: 20px !important;
+}
+
+.mailing-list-content {
+    background: linear-gradient(135deg, #1e3a8a, #000000) !important;
+    border: 3px solid #3b82f6 !important;
+    border-radius: 15px !important;
+    padding: 40px !important;
+    max-width: 600px !important;
+    width: 100% !important;
+    text-align: center !important;
+    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.5) !important;
+}
+
+.mailing-list-content h2 {
+    color: #60a5fa !important;
+    font-size: 2rem !important;
+    margin-bottom: 20px !important;
+    font-family: inherit !important;
+}
+
+.mailing-list-content p {
+    color: #e5e7eb !important;
+    font-size: 1.1rem !important;
+    margin-bottom: 15px !important;
+    font-family: inherit !important;
+}
+
+.mailing-list-content strong {
+    color: #93c5fd !important;
+}
+
+.squarespace-newsletter-block {
+    margin: 30px 0 !important;
+    padding: 20px !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-radius: 10px !important;
+}
+
+.newsletter-placeholder {
+    color: #93c5fd !important;
+    font-style: italic !important;
+    padding: 20px !important;
+}
+
+.close-newsletter-button {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #e5e7eb !important;
+    border: 2px solid #4b5563 !important;
+    padding: 12px 30px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    margin-top: 20px !important;
+}
+
+.close-newsletter-button:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: #60a5fa !important;
+}
