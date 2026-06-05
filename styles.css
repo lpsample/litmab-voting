@@ -227,7 +227,23 @@ h1 {
     border: 2px solid rgba(0, 0, 0, 0.3) !important;
     border-radius: 50% !important;
     box-shadow: 0 0 5px rgba(255, 255, 255, 0.8) !important;
-    pointer-events: none !important;
+    z-index: 10 !important;
+}
+
+.scale-dot-clickable {
+    cursor: pointer !important;
+    padding: 8px !important;
+    transition: all 0.3s ease !important;
+    pointer-events: auto !important;
+}
+
+.scale-dot-clickable:hover {
+    transform: translate(-50%, -50%) scale(1.3) !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 1) !important;
+}
+
+.scale-dot-clickable:active {
+    transform: translate(-50%, -50%) scale(1.1) !important;
 }
 
 .scale-labels {
@@ -299,8 +315,12 @@ h1 {
     font-style: italic;
 }
 
-.scale-label-hover:hover .scale-artists {
-    display: block;
+.scale-left.show-artists .scale-artists,
+.scale-middle.show-artists .scale-artists,
+.scale-right.show-artists .scale-artists {
+    opacity: 1 !important;
+    max-height: 100px !important;
+    margin-top: 8px !important;
 }
 
 .scale-left .scale-artists {

@@ -59,6 +59,42 @@ function init() {
     
     // Set up mailing list form
     setupMailingListForm();
+    
+    // Set up genre scale dot click handlers
+    setupGenreScaleDots();
+}
+
+// Set up click handlers for genre scale dots
+function setupGenreScaleDots() {
+    const dots = document.querySelectorAll('.scale-dot-clickable');
+    
+    dots.forEach(dot => {
+        dot.addEventListener('click', function() {
+            const position = this.dataset.position;
+            const labels = document.querySelectorAll('.scale-labels span');
+            
+            // Remove show-artists class from all labels
+            labels.forEach(label => label.classList.remove('show-artists'));
+            
+            // Add show-artists class to the corresponding label
+            if (position === 'left') {
+                document.querySelector('.scale-left').classList.add('show-artists');
+            } else if (position === 'middle') {
+                document.querySelector('.scale-middle').classList.add('show-artists');
+            } else if (position === 'right') {
+                document.querySelector('.scale-right').classList.add('show-artists');
+            }
+        });
+    });
+    
+    // Close artist examples when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.genre-scale-legend')) {
+            document.querySelectorAll('.scale-labels span').forEach(label => {
+                label.classList.remove('show-artists');
+            });
+        }
+    });
 }
 
 // Load user's previous votes from localStorage
@@ -182,7 +218,7 @@ function createSongElement(song) {
         
         // Add lyric preview
         if (song.lyricPreview) {
-            tooltipContent += `<div class="tooltip-lyric">"${song.lyricPreview}"</div>`;
+            tooltipContent += `<div class="tooltip-lyric">${song.lyricPreview}</div>`;
         }
         
         // Add genre scale (without softer/harder labels)
