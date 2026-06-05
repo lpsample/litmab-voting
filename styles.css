@@ -825,6 +825,21 @@ footer {
     .song-title {
         font-size: 1rem;
     }
+    
+    .mailing-list-content {
+        padding: 20px 15px !important;
+        max-height: 85vh !important;
+    }
+    
+    .mailing-list-content h2 {
+        font-size: 1.5rem !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .mailing-list-content p {
+        font-size: 0.95rem !important;
+        margin-bottom: 10px !important;
+    }
 }
 
 /* Animation for vote confirmation */
@@ -947,6 +962,8 @@ footer {
     padding: 40px !important;
     max-width: 600px !important;
     width: 100% !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
     text-align: center !important;
     box-shadow: 0 10px 40px rgba(59, 130, 246, 0.5) !important;
 }
