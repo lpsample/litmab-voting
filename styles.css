@@ -648,6 +648,7 @@ h1 {
     gap: 12px !important;
     cursor: pointer !important;
     pointer-events: auto !important;
+    justify-content: space-between !important;
 }
 
 .song-radio {
@@ -675,6 +676,31 @@ h1 {
 
 .radio-label:hover {
     color: #60a5fa !important;
+}
+
+.clue-button {
+    background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+    color: white !important;
+    border: none !important;
+    padding: 8px 20px !important;
+    border-radius: 6px !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    pointer-events: auto !important;
+}
+
+.clue-button:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+}
+
+.clue-button:active {
+    transform: translateY(0) !important;
 }
 
 /* Vote Button */

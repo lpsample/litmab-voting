@@ -246,10 +246,22 @@ function createSongElement(song) {
         const label = document.createElement('label');
         label.htmlFor = `song-${song.number}`;
         label.className = 'radio-label';
-        label.textContent = hasUserVoted(song.number) ? 'You Voted for This!' : 'Tap/Hover for Clues';
+        label.textContent = hasUserVoted(song.number) ? 'You Voted for This!' : 'Vote';
         
         radioContainer.appendChild(radio);
         radioContainer.appendChild(label);
+        
+        // Add CLUE button
+        const clueButton = document.createElement('button');
+        clueButton.className = 'clue-button';
+        clueButton.textContent = 'CLUE';
+        clueButton.type = 'button';
+        clueButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            div.classList.toggle('show-lyric');
+        });
+        
+        radioContainer.appendChild(clueButton);
         div.appendChild(radioContainer);
     }
     
