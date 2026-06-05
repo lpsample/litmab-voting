@@ -56,6 +56,9 @@ function init() {
             submitButton.textContent = 'Vote Submitted! ✓';
         }
     }
+    
+    // Set up mailing list form
+    setupMailingListForm();
 }
 
 // Load user's previous votes from localStorage
@@ -635,4 +638,82 @@ function renderVoteResultsChart(songVotes, maxVotes) {
         
         chartContainer.appendChild(barItem);
     });
+}
+
+// Handle mailing list form submission
+async function handleMailingListSubmit(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const submitButton = form.querySelector('.submit-mailing-button');
+    const messageDiv = document.getElementById('formMessage');
+    
+    // Get form data
+    const name = document.getElementById('subscriberName').value.trim();
+    const email = document.getElementById('subscriberEmail').value.trim();
+    const phone = document.getElementById('subscriberPhone').value.trim();
+    
+    // Validate
+    if (!name || !email) {
+        showFormMessage('Please fill in all required fields', 'error');
+        return;
+    }
+    
+    // Disable button
+    submitButton.disabled = true;
+    submitButton.textContent = 'Submitting...';
+    
+    try {
+        if (!db) {
+            throw new Error('Database not initialized');
+        }
+        
+        // Save to Firebase
+        const timestamp = new Date().toISOString();
+        const subscriberRef = db.ref('mailingList').push();
+        
+        await subscriberRef.set({
+            name: name,
+            email: email,
+            phone: phone || '',
+            timestamp: timestamp,
+            source: 'voting_app'
+        });
+        
+        // Success
+        showFormMessage('✓ Thanks for joining! You\'re on the list.', 'success');
+        form.reset();
+        
+        // Close popup after 2 seconds
+        setTimeout(() => {
+            const mailingListContainer = document.getElementById('mailingListContainer');
+            if (mailingListContainer) {
+                mailingListContainer.classList.remove('show');
+            }
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Error saving to mailing list:', error);
+        showFormMessage('Oops! Something went wrong. Please try again.', 'error');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Join Mailing List';
+    }
+}
+
+// Show form message
+function showFormMessage(message, type) {
+    const messageDiv = document.getElementById('formMessage');
+    if (messageDiv) {
+        messageDiv.textContent = message;
+        messageDiv.className = `form-message ${type}`;
+        messageDiv.style.display = 'block';
+    }
+}
+
+// Set up mailing list form listener
+function setupMailingListForm() {
+    const form = document.getElementById('mailingListForm');
+    if (form) {
+        form.addEventListener('submit', handleMailingListSubmit);
+    }
 }
