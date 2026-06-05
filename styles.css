@@ -621,9 +621,7 @@ h1 {
 /* Mobile: Add tap indicator */
 @media (hover: none) and (pointer: coarse) {
     .song-title::after {
-        content: ' 👆';
-        font-size: 0.8em;
-        opacity: 0.6;
+        content: '';
     }
 }
 
