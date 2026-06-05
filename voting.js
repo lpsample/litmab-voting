@@ -652,6 +652,7 @@ async function handleMailingListSubmit(event) {
     const name = document.getElementById('subscriberName').value.trim();
     const email = document.getElementById('subscriberEmail').value.trim();
     const phone = document.getElementById('subscriberPhone').value.trim();
+    const tourLocation = document.getElementById('tourLocation').value.trim();
     
     // Validate
     if (!name || !email) {
@@ -665,7 +666,8 @@ async function handleMailingListSubmit(event) {
     
     try {
         if (!db) {
-            throw new Error('Database not initialized');
+            console.error('Database not initialized - db is:', db);
+            throw new Error('Database connection not available. Please refresh the page and try again.');
         }
         
         // Save to Firebase
@@ -676,6 +678,7 @@ async function handleMailingListSubmit(event) {
             name: name,
             email: email,
             phone: phone || '',
+            tourLocation: tourLocation || '',
             timestamp: timestamp,
             source: 'voting_app'
         });
@@ -694,7 +697,8 @@ async function handleMailingListSubmit(event) {
         
     } catch (error) {
         console.error('Error saving to mailing list:', error);
-        showFormMessage('Oops! Something went wrong. Please try again.', 'error');
+        const errorMessage = error.message || 'Oops! Something went wrong. Please try again.';
+        showFormMessage(errorMessage, 'error');
         submitButton.disabled = false;
         submitButton.textContent = 'Join Mailing List';
     }
