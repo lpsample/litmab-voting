@@ -329,6 +329,9 @@ async function handleVote(songNumber) {
         console.log(`Vote recorded for ${song.title}`);
         alert(`Thank you! Your vote for "${song.title}" has been recorded.\n\nThe next release will be on the 17th!`);
         
+        // Show vote results chart
+        showVoteResultsChart();
+        
         // Show mailing list signup popup
         showMailingListPopup();
     } catch (error) {
@@ -552,3 +555,84 @@ if (document.readyState === 'loading') {
 }
 
 // Made with Bob
+
+// Show vote results chart
+function showVoteResultsChart() {
+    const resultsContainer = document.getElementById('voteResultsContainer');
+    if (resultsContainer) {
+        resultsContainer.style.display = 'block';
+        
+        // Load and display vote data
+        if (db) {
+            loadAndDisplayVoteResults();
+        }
+    }
+}
+
+// Load and display vote results in chart
+async function loadAndDisplayVoteResults() {
+    if (!db) return;
+    
+    try {
+        const votesRef = db.ref('votes');
+        const snapshot = await votesRef.once('value');
+        const votes = snapshot.val() || {};
+        
+        // Get votable songs and their vote counts
+        const songVotes = [];
+        let totalVotes = 0;
+        
+        CONFIG.songs.forEach(song => {
+            if (song.state === 'votable') {
+                const songKey = song.title.replace(/[.#$[\]]/g, '_').replace(/\s+/g, '_');
+                const voteCount = votes[songKey] || 0;
+                totalVotes += voteCount;
+                
+                songVotes.push({
+                    number: song.number,
+                    title: song.title,
+                    votes: voteCount,
+                    userVoted: hasUserVoted(song.number)
+                });
+            }
+        });
+        
+        // Sort by vote count (descending)
+        songVotes.sort((a, b) => b.votes - a.votes);
+        
+        // Find max votes for scaling
+        const maxVotes = Math.max(...songVotes.map(s => s.votes), 1);
+        
+        // Render chart
+        renderVoteResultsChart(songVotes, maxVotes);
+    } catch (error) {
+        console.error('Error loading vote results:', error);
+    }
+}
+
+// Render vote results chart
+function renderVoteResultsChart(songVotes, maxVotes) {
+    const chartContainer = document.getElementById('voteResultsChart');
+    if (!chartContainer) return;
+    
+    chartContainer.innerHTML = '';
+    
+    songVotes.forEach(song => {
+        const percentage = maxVotes > 0 ? (song.votes / maxVotes * 100) : 0;
+        
+        const barItem = document.createElement('div');
+        barItem.className = 'chart-bar-item';
+        if (song.userVoted) {
+            barItem.classList.add('user-voted');
+        }
+        
+        barItem.innerHTML = `
+            <div class="chart-song-title">${song.title}</div>
+            <div class="chart-bar-container">
+                <div class="chart-bar-fill" style="width: ${percentage}%"></div>
+            </div>
+        `;
+        
+        chartContainer.appendChild(barItem);
+    });
+}
