@@ -169,20 +169,8 @@ function createSongElement(song) {
     title.className = 'song-title';
     title.textContent = song.title;
     
-    const status = document.createElement('div');
-    status.className = `song-status status-${song.state}`;
-    
-    if (song.state === 'released') {
-        status.textContent = 'Out Now';
-    } else if (song.state === 'votable') {
-        status.textContent = hasUserVoted(song.number) ? 'Voted' : 'Vote';
-    } else if (song.state === 'locked') {
-        status.innerHTML = 'Locked 🔒';
-    }
-    
     header.appendChild(number);
     header.appendChild(title);
-    header.appendChild(status);
     div.appendChild(header);
     
     // Combined lyric and genre scale tooltip
