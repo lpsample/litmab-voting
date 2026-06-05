@@ -250,19 +250,18 @@ function createSongElement(song) {
         
         radioContainer.appendChild(radio);
         radioContainer.appendChild(label);
+        div.appendChild(radioContainer);
         
-        // Add CLUE button
+        // CLUE button (replaces the old vote button)
         const clueButton = document.createElement('button');
-        clueButton.className = 'clue-button';
+        clueButton.className = 'vote-button';
         clueButton.textContent = 'CLUE';
         clueButton.type = 'button';
         clueButton.addEventListener('click', (e) => {
             e.stopPropagation();
             div.classList.toggle('show-lyric');
         });
-        
-        radioContainer.appendChild(clueButton);
-        div.appendChild(radioContainer);
+        div.appendChild(clueButton);
     }
     
     return div;
