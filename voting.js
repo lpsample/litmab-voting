@@ -341,20 +341,20 @@ async function handleVote(songNumber) {
 function showMailingListPopup() {
     const mailingListContainer = document.getElementById('mailingListContainer');
     if (mailingListContainer) {
-        mailingListContainer.style.display = 'flex';
+        mailingListContainer.classList.add('show');
         
         // Set up close button
         const closeButton = document.getElementById('closeNewsletterButton');
         if (closeButton) {
             closeButton.addEventListener('click', function() {
-                mailingListContainer.style.display = 'none';
+                mailingListContainer.classList.remove('show');
             });
         }
         
         // Close on background click
         mailingListContainer.addEventListener('click', function(e) {
             if (e.target === mailingListContainer) {
-                mailingListContainer.style.display = 'none';
+                mailingListContainer.classList.remove('show');
             }
         });
     }

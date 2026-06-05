@@ -838,11 +838,15 @@ footer {
     width: 100% !important;
     height: 100% !important;
     background: rgba(0, 0, 0, 0.9) !important;
-    display: flex !important;
+    display: none !important;
     align-items: center !important;
     justify-content: center !important;
     z-index: 10000 !important;
     padding: 20px !important;
+}
+
+.mailing-list-container.show {
+    display: flex !important;
 }
 
 .mailing-list-content {
@@ -884,6 +888,82 @@ footer {
 .newsletter-placeholder {
     color: #93c5fd !important;
     font-style: italic !important;
+    padding: 20px !important;
+}
+
+/* Squarespace Newsletter Form Styling */
+.newsletter-form {
+    width: 100% !important;
+}
+
+.newsletter-form-header-title {
+    color: #60a5fa !important;
+    font-size: 1.5rem !important;
+    margin-bottom: 10px !important;
+}
+
+.newsletter-form-header-description {
+    color: #e5e7eb !important;
+    margin-bottom: 20px !important;
+}
+
+.newsletter-form-header-description p {
+    color: #e5e7eb !important;
+    margin: 5px 0 !important;
+}
+
+.newsletter-form-field-label {
+    color: #93c5fd !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 5px !important;
+    display: block !important;
+}
+
+.newsletter-form-field-element {
+    width: 100% !important;
+    padding: 12px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 2px solid #4b5563 !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-size: 1rem !important;
+    margin-bottom: 15px !important;
+}
+
+.newsletter-form-field-element:focus {
+    border-color: #60a5fa !important;
+    outline: none !important;
+}
+
+.newsletter-form-name-fieldset {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 15px 0 !important;
+}
+
+.newsletter-form-button {
+    background: linear-gradient(135deg, #3b82f6, #1e40af) !important;
+    color: white !important;
+    border: none !important;
+    padding: 15px 40px !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    margin-top: 10px !important;
+}
+
+.newsletter-form-button:hover {
+    background: linear-gradient(135deg, #2563eb, #1e3a8a) !important;
+    transform: translateY(-2px) !important;
+}
+
+.form-submission-text {
+    color: #60a5fa !important;
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
     padding: 20px !important;
 }
 
