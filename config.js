@@ -43,6 +43,7 @@ const CONFIG = {
             number: 1,
             title: "Go Go Go",
             state: "released",  // Options: "released", "votable", "locked"
+            releaseDate: "Out July 17",
             lyricPreview: "Neurons lost their firing pins… my skin breaks out and I get high and overeat",
             ameriRockScale: 5  // 0=Folk/Americana, 10=Hard Rock
         },

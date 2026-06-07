@@ -205,8 +205,21 @@ function createSongElement(song) {
     title.className = 'song-title';
     title.textContent = song.title;
     
+    // Add status badge for all songs
+    const status = document.createElement('div');
+    status.className = `song-status status-${song.state}`;
+    
+    if (song.state === 'released') {
+        status.textContent = song.releaseDate || 'Out Now';
+    } else if (song.state === 'votable') {
+        status.textContent = 'ELIGIBLE';
+    } else if (song.state === 'locked') {
+        status.innerHTML = 'Locked 🔒';
+    }
+    
     header.appendChild(number);
     header.appendChild(title);
+    header.appendChild(status);
     div.appendChild(header);
     
     // Combined lyric and genre scale tooltip
