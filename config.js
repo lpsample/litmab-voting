@@ -129,7 +129,7 @@ const CONFIG = {
     // Display Options
     display: {
         showVoteCounts: true,        // Show real-time vote counts
-        allowMultipleVotes: false,   // Allow users to vote multiple times (uses localStorage to track)
+        allowMultipleVotes: true,    // Allow users to vote multiple times (uses localStorage to track)
         showCountdown: true          // Show countdown to next voting period/release
     }
 };

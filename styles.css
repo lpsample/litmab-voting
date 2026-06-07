@@ -662,22 +662,30 @@ h1 {
 /* Radio Button Styles - Ensure Clickability */
 .radio-container {
     margin-top: 15px !important;
-    padding: 10px !important;
+    padding: 12px 15px !important;
     display: flex !important;
     align-items: center !important;
-    gap: 12px !important;
+    gap: 10px !important;
     cursor: pointer !important;
     pointer-events: auto !important;
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-radius: 8px !important;
+    transition: background 0.2s ease !important;
+}
+
+.radio-container:hover {
+    background: rgba(59, 130, 246, 0.15) !important;
 }
 
 .song-radio {
-    width: 20px !important;
-    height: 20px !important;
+    width: 18px !important;
+    height: 18px !important;
     cursor: pointer !important;
     accent-color: #3b82f6 !important;
     pointer-events: auto !important;
     margin: 0 !important;
     padding: 0 !important;
+    flex-shrink: 0 !important;
 }
 
 .song-radio:disabled {
