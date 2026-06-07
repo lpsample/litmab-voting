@@ -323,7 +323,7 @@ async function handleVote(songNumber) {
     if (!song) return;
     
     // Show confirmation dialog
-    const confirmed = confirm(`Are you sure you want to vote for "${song.title}"?\n\nYou can only vote once per voting period.`);
+    const confirmed = confirm(`Are you sure you want to vote for "${song.title}"?`);
     
     if (!confirmed) {
         return; // User cancelled

@@ -318,6 +318,7 @@ h1 {
 .scale-left.show-artists .scale-artists,
 .scale-middle.show-artists .scale-artists,
 .scale-right.show-artists .scale-artists {
+    display: block !important;
     opacity: 1 !important;
     max-height: 100px !important;
     margin-top: 8px !important;
