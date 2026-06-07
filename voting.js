@@ -69,7 +69,8 @@ function setupGenreScaleDots() {
     const dots = document.querySelectorAll('.scale-dot-clickable');
     
     dots.forEach(dot => {
-        dot.addEventListener('click', function() {
+        dot.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent click from bubbling to document
             const position = this.dataset.position;
             const labels = document.querySelectorAll('.scale-labels span');
             
