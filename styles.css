@@ -833,6 +833,24 @@ footer {
     font-size: 0.95rem;
 }
 
+/* Secret Link */
+.secret-link {
+    display: block;
+    margin-top: 30px;
+    font-size: 0.7em;
+    color: #999;
+    text-decoration: none;
+    opacity: 0.4;
+    transition: opacity 0.3s ease, color 0.3s ease;
+    font-style: italic;
+}
+
+.secret-link:hover {
+    opacity: 0.8;
+    color: #93c5fd;
+    text-decoration: underline;
+}
+
 /* Desktop Grid Layout */
 @media (min-width: 1024px) {
     .container {
