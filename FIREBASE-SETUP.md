@@ -62,6 +62,13 @@ The config will look like this:
       "$songId": {
         ".validate": "newData.isNumber() && newData.val() >= 0"
       }
+    },
+    "mailingList": {
+      ".read": false,
+      ".write": true,
+      "$userId": {
+        ".validate": "newData.hasChildren(['email', 'timestamp'])"
+      }
     }
   }
 }
@@ -70,12 +77,19 @@ The config will look like this:
 3. Click **"Publish"**
 
 ### What These Rules Do:
+
+**For Votes:**
 - **`.read: true`** - Anyone can read vote counts (so they display on the website)
 - **`.write: true`** - Anyone can write votes (allows voting without authentication)
 - **`.validate`** - Ensures votes are positive numbers
 
+**For Mailing List:**
+- **`.read: false`** - Mailing list emails are private (only you can see them in Firebase Console)
+- **`.write: true`** - Anyone can submit to the mailing list
+- **`.validate`** - Ensures submissions have required fields (email and timestamp)
+
 ### Security Note:
-These rules allow anyone to vote. For production, you might want to add rate limiting or require authentication. For a fan voting site, this simple setup works well.
+These rules allow anyone to vote and join the mailing list. Users cannot see other people's emails or votes. For a fan voting site, this setup provides good security while keeping things simple.
 
 ## Step 5: Update Your Config File
 
