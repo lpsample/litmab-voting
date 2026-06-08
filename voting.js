@@ -106,6 +106,17 @@ function setupGenreScaleDots() {
             });
         }
     });
+    
+    // Close artist examples when scrolling (mobile only)
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        if (window.innerWidth <= 768) {
+            // Hide immediately on scroll
+            document.querySelectorAll('.scale-labels span').forEach(label => {
+                label.classList.remove('show-artists');
+            });
+        }
+    });
 }
 
 // Load user's previous votes from localStorage
@@ -392,8 +403,9 @@ async function handleVote(songNumber) {
         console.log(`Vote recorded for ${song.title}`);
         alert(`Thank you! Your vote for "${song.title}" has been recorded.\n\nThe next release will be on the 17th!`);
         
-        // Show vote results chart
+        // Show vote results chart and load data
         showVoteResultsChart();
+        await loadAndDisplayVoteResults();
         
         // Show mailing list signup popup
         showMailingListPopup();

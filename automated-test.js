@@ -168,7 +168,7 @@
     // Test 7: CSS Grid Layout
     console.log('\n%c📐 Testing Responsive Layout...', 'color: #8b5cf6; font-size: 16px; font-weight: bold;');
     try {
-        const songsContainer = document.getElementById('songsContainer');
+        const songsContainer = document.getElementById('tracklist');
         if (songsContainer) {
             const computedStyle = window.getComputedStyle(songsContainer);
             const display = computedStyle.display;
@@ -235,26 +235,39 @@
     // Test 9: Mobile Artist Examples Positioning
     try {
         const artistExamples = document.querySelectorAll('.scale-artists');
-        let allCentered = true;
+        let allProperlyPositioned = true;
+        let positioningDetails = [];
         
         artistExamples.forEach((example, index) => {
             const computedStyle = window.getComputedStyle(example);
+            const position = computedStyle.position;
             const left = computedStyle.left;
             const transform = computedStyle.transform;
+            const maxWidth = computedStyle.maxWidth;
             
-            // On mobile, should be centered (left: 50%, transform: translateX(-50%))
+            // On mobile, should use fixed positioning with centering
             if (window.innerWidth <= 768) {
-                if (left !== '50%' || !transform.includes('translateX(-50%)')) {
-                    allCentered = false;
+                // Check for fixed positioning
+                const hasFixedPosition = position === 'fixed';
+                
+                // Check for centering (left: 50% and translateX in transform)
+                const hasCentering = left === '50%' || transform.includes('translateX');
+                
+                // Check for width constraint to prevent overflow
+                const hasWidthConstraint = maxWidth && maxWidth !== 'none';
+                
+                if (!hasFixedPosition || !hasCentering || !hasWidthConstraint) {
+                    allProperlyPositioned = false;
+                    positioningDetails.push(`Example ${index}: position=${position}, left=${left}, maxWidth=${maxWidth}`);
                 }
             }
         });
         
         if (window.innerWidth <= 768) {
-            if (allCentered) {
-                pass('Mobile Artist Positioning', 'All artist examples centered on mobile');
+            if (allProperlyPositioned) {
+                pass('Mobile Artist Positioning', 'All artist examples properly positioned (fixed, centered, constrained)');
             } else {
-                fail('Mobile Artist Positioning', 'Some artist examples not centered');
+                fail('Mobile Artist Positioning', `Some artist examples not properly positioned: ${positioningDetails.join('; ')}`);
             }
         } else {
             pass('Mobile Artist Positioning', 'Skipped (not on mobile viewport)');
