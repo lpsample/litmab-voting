@@ -72,18 +72,28 @@ function setupGenreScaleDots() {
         dot.addEventListener('click', function(e) {
             e.stopPropagation(); // Prevent click from bubbling to document
             const position = this.dataset.position;
-            const labels = document.querySelectorAll('.scale-labels span');
+            
+            // Get the target label
+            let targetLabel;
+            if (position === 'left') {
+                targetLabel = document.querySelector('.scale-left');
+            } else if (position === 'middle') {
+                targetLabel = document.querySelector('.scale-middle');
+            } else if (position === 'right') {
+                targetLabel = document.querySelector('.scale-right');
+            }
+            
+            // Check if this label is already showing
+            const isAlreadyShowing = targetLabel && targetLabel.classList.contains('show-artists');
             
             // Remove show-artists class from all labels
-            labels.forEach(label => label.classList.remove('show-artists'));
+            document.querySelectorAll('.scale-labels span').forEach(label => {
+                label.classList.remove('show-artists');
+            });
             
-            // Add show-artists class to the corresponding label
-            if (position === 'left') {
-                document.querySelector('.scale-left').classList.add('show-artists');
-            } else if (position === 'middle') {
-                document.querySelector('.scale-middle').classList.add('show-artists');
-            } else if (position === 'right') {
-                document.querySelector('.scale-right').classList.add('show-artists');
+            // Toggle: if it wasn't showing, show it now
+            if (!isAlreadyShowing && targetLabel) {
+                targetLabel.classList.add('show-artists');
             }
         });
     });
