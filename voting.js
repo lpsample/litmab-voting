@@ -306,7 +306,7 @@ function createSongElement(song) {
         const label = document.createElement('label');
         label.htmlFor = `song-${song.number}`;
         label.className = 'radio-label';
-        label.textContent = hasUserVoted(song.number) ? 'You Voted for This!' : 'Select';
+        label.textContent = hasUserVoted(song.number) ? 'You Voted for This!' : 'SELECT';
         
         radioContainer.appendChild(radio);
         radioContainer.appendChild(label);
@@ -622,9 +622,16 @@ if (document.readyState === 'loading') {
 // Show vote results chart (remove blur after voting)
 function showVoteResultsChart() {
     const resultsContainer = document.getElementById('voteResultsContainer');
+    const unlockOverlay = document.getElementById('unlockOverlay');
+    
     if (resultsContainer) {
         // Remove blur effect
         resultsContainer.classList.remove('blurred');
+        
+        // Hide unlock overlay
+        if (unlockOverlay) {
+            unlockOverlay.style.display = 'none';
+        }
         
         // Update subtitle text
         const subtitle = resultsContainer.querySelector('.vote-results-subtitle');

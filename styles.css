@@ -1185,6 +1185,31 @@ footer {
     border-radius: 12px !important;
     box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3) !important;
     transition: filter 0.5s ease !important;
+    position: relative !important;
+}
+
+/* Unlock Overlay */
+.unlock-overlay {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 10 !important;
+    pointer-events: none !important;
+}
+
+.unlock-message {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
+    color: white !important;
+    padding: 15px 30px !important;
+    border-radius: 30px !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6) !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    text-align: center !important;
 }
 
 /* Blurred state (before voting) */
