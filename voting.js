@@ -421,20 +421,30 @@ function showMailingListPopup() {
     if (mailingListContainer) {
         mailingListContainer.classList.add('show');
         
-        // Set up close button
+        // Set up close button (remove old listener first to prevent duplicates)
         const closeButton = document.getElementById('closeNewsletterButton');
         if (closeButton) {
-            closeButton.addEventListener('click', function() {
+            // Clone and replace to remove all old event listeners
+            const newCloseButton = closeButton.cloneNode(true);
+            closeButton.parentNode.replaceChild(newCloseButton, closeButton);
+            
+            newCloseButton.addEventListener('click', function() {
                 mailingListContainer.classList.remove('show');
+                // Load vote results when popup is closed
+                console.log('Popup closed via button - loading vote results...');
+                loadAndDisplayVoteResults();
             });
         }
         
-        // Close on background click
+        // Close on background click (use once option to prevent duplicates)
         mailingListContainer.addEventListener('click', function(e) {
             if (e.target === mailingListContainer) {
                 mailingListContainer.classList.remove('show');
+                // Load vote results when popup is closed
+                console.log('Popup closed via background click - loading vote results...');
+                loadAndDisplayVoteResults();
             }
-        });
+        }, { once: true });
     }
 }
 
@@ -655,12 +665,19 @@ function showVoteResultsChart() {
 
 // Load and display vote results in chart
 async function loadAndDisplayVoteResults() {
-    if (!db) return;
+    console.log('🔄 loadAndDisplayVoteResults() called');
+    
+    if (!db) {
+        console.error('❌ Database not initialized');
+        return;
+    }
     
     try {
+        console.log('📊 Fetching votes from Firebase...');
         const votesRef = db.ref('votes');
         const snapshot = await votesRef.once('value');
         const votes = snapshot.val() || {};
+        console.log('✅ Votes fetched:', votes);
         
         // Get votable songs and their vote counts
         const songVotes = [];
@@ -681,28 +698,46 @@ async function loadAndDisplayVoteResults() {
             }
         });
         
+        console.log(`📈 Found ${songVotes.length} votable songs with ${totalVotes} total votes`);
+        
         // Sort by vote count (descending)
         songVotes.sort((a, b) => b.votes - a.votes);
         
         // Find max votes for scaling
         const maxVotes = Math.max(...songVotes.map(s => s.votes), 1);
+        console.log(`🎯 Max votes: ${maxVotes}`);
         
         // Render chart
+        console.log('🎨 Rendering chart...');
         renderVoteResultsChart(songVotes, maxVotes);
+        console.log('✅ Chart rendering complete');
     } catch (error) {
-        console.error('Error loading vote results:', error);
+        console.error('❌ Error loading vote results:', error);
     }
 }
 
 // Render vote results chart
 function renderVoteResultsChart(songVotes, maxVotes) {
-    const chartContainer = document.getElementById('voteResultsChart');
-    if (!chartContainer) return;
+    console.log('🎨 renderVoteResultsChart() called with', songVotes.length, 'songs');
     
+    const chartContainer = document.getElementById('voteResultsChart');
+    if (!chartContainer) {
+        console.error('❌ Chart container not found!');
+        return;
+    }
+    
+    console.log('✅ Chart container found, clearing old content...');
     chartContainer.innerHTML = '';
     
-    songVotes.forEach(song => {
+    if (songVotes.length === 0) {
+        console.warn('⚠️ No songs to display in chart');
+        chartContainer.innerHTML = '<p style="text-align: center; color: #93c5fd;">No votes yet. Be the first to vote!</p>';
+        return;
+    }
+    
+    songVotes.forEach((song, index) => {
         const percentage = maxVotes > 0 ? (song.votes / maxVotes * 100) : 0;
+        console.log(`  📊 Song ${index + 1}: ${song.title} - ${song.votes} votes (${percentage.toFixed(1)}%)`);
         
         const barItem = document.createElement('div');
         barItem.className = 'chart-bar-item';
@@ -719,6 +754,8 @@ function renderVoteResultsChart(songVotes, maxVotes) {
         
         chartContainer.appendChild(barItem);
     });
+    
+    console.log(`✅ Added ${songVotes.length} bars to chart`);
 }
 
 // Handle mailing list form submission
