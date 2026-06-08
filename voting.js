@@ -284,7 +284,7 @@ function createSongElement(song) {
         const label = document.createElement('label');
         label.htmlFor = `song-${song.number}`;
         label.className = 'radio-label';
-        label.textContent = hasUserVoted(song.number) ? 'You Voted for This!' : 'Vote';
+        label.textContent = hasUserVoted(song.number) ? 'You Voted for This!' : 'Select';
         
         radioContainer.appendChild(radio);
         radioContainer.appendChild(label);

@@ -315,11 +315,20 @@ h1 {
     font-style: italic;
 }
 
-/* Show on hover for desktop */
+/* Show on hover for desktop - hover over dots */
 @media (hover: hover) and (pointer: fine) {
-    .scale-left:hover .scale-artists,
-    .scale-middle:hover .scale-artists,
-    .scale-right:hover .scale-artists {
+    .scale-dot-clickable:hover ~ .scale-labels .scale-left .scale-artists,
+    .scale-dot-clickable[data-position="left"]:hover ~ .scale-labels .scale-left .scale-artists {
+        display: block !important;
+        opacity: 1 !important;
+    }
+    
+    .scale-dot-clickable[data-position="middle"]:hover ~ .scale-labels .scale-middle .scale-artists {
+        display: block !important;
+        opacity: 1 !important;
+    }
+    
+    .scale-dot-clickable[data-position="right"]:hover ~ .scale-labels .scale-right .scale-artists {
         display: block !important;
         opacity: 1 !important;
     }
@@ -680,22 +689,28 @@ h1 {
     }
 }
 
-/* Radio Button Styles - Ensure Clickability */
+/* Radio Button Styles - Match CLUE button styling */
 .radio-container {
-    margin-top: 15px !important;
-    padding: 12px 15px !important;
+    margin-top: 12px !important;
+    padding: 14px 20px !important;
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important;
+    gap: 12px !important;
     cursor: pointer !important;
     pointer-events: auto !important;
-    background: rgba(59, 130, 246, 0.1) !important;
+    background: linear-gradient(90deg, #3b82f6, #2563eb) !important;
     border-radius: 8px !important;
-    transition: background 0.2s ease !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
 }
 
 .radio-container:hover {
-    background: rgba(59, 130, 246, 0.15) !important;
+    background: linear-gradient(90deg, #2563eb, #1d4ed8) !important;
+    transform: scale(1.02) !important;
+}
+
+.radio-container:active {
+    transform: scale(0.98) !important;
 }
 
 .song-radio {
@@ -715,15 +730,17 @@ h1 {
 }
 
 .radio-label {
-    font-size: 0.95rem !important;
-    color: #e5e7eb !important;
+    font-size: 1rem !important;
+    color: white !important;
     cursor: pointer !important;
     pointer-events: auto !important;
     user-select: none !important;
+    font-weight: 600 !important;
+    flex: 1 !important;
 }
 
 .radio-label:hover {
-    color: #60a5fa !important;
+    color: #f0f9ff !important;
 }
 
 /* Vote Button */
