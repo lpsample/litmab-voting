@@ -347,23 +347,31 @@ h1 {
 @media (max-width: 768px) {
     .scale-artists {
         white-space: normal !important;
-        max-width: 200px !important;
+        max-width: 90vw !important;
+        width: max-content !important;
         text-align: center !important;
         word-wrap: break-word !important;
         overflow-wrap: break-word !important;
         line-height: 1.4 !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        box-sizing: border-box !important;
     }
 }
 
-.scale-left .scale-artists {
-    left: 0;
-    transform: translateX(0);
-}
+/* Desktop positioning for left/right dots */
+@media (min-width: 769px) {
+    .scale-left .scale-artists {
+        left: 0;
+        transform: translateX(0);
+    }
 
-.scale-right .scale-artists {
-    left: auto;
-    right: 0;
-    transform: translateX(0);
+    .scale-right .scale-artists {
+        left: auto;
+        right: 0;
+        transform: translateX(0);
+    }
 }
 
 /* Next Release Section */
@@ -1188,7 +1196,7 @@ footer {
     position: relative !important;
 }
 
-/* Unlock Overlay */
+/* Unlock Overlay - positioned outside blur effect */
 .unlock-overlay {
     position: absolute !important;
     top: 50% !important;
@@ -1196,6 +1204,7 @@ footer {
     transform: translate(-50%, -50%) !important;
     z-index: 10 !important;
     pointer-events: none !important;
+    filter: none !important;
 }
 
 .unlock-message {
@@ -1210,17 +1219,17 @@ footer {
     box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6) !important;
     border: 2px solid rgba(255, 255, 255, 0.3) !important;
     text-align: center !important;
+    filter: none !important;
 }
 
-/* Blurred state (before voting) */
-.vote-results-container.blurred {
+/* Blurred state (before voting) - blur only the content, not the overlay */
+.vote-results-container.blurred .vote-results-title,
+.vote-results-container.blurred .vote-results-subtitle,
+.vote-results-container.blurred .vote-results-chart {
     filter: blur(8px) !important;
+    opacity: 0.6 !important;
     pointer-events: none !important;
     user-select: none !important;
-}
-
-.vote-results-container.blurred .vote-results-chart {
-    opacity: 0.6 !important;
 }
 
 .vote-results-title {
