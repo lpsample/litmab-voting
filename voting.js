@@ -609,15 +609,17 @@ if (document.readyState === 'loading') {
 
 // Made with Bob
 
-// Show vote results chart
+// Show vote results chart (remove blur after voting)
 function showVoteResultsChart() {
     const resultsContainer = document.getElementById('voteResultsContainer');
     if (resultsContainer) {
-        resultsContainer.style.display = 'block';
+        // Remove blur effect
+        resultsContainer.classList.remove('blurred');
         
-        // Load and display vote data
-        if (db) {
-            loadAndDisplayVoteResults();
+        // Update subtitle text
+        const subtitle = resultsContainer.querySelector('.vote-results-subtitle');
+        if (subtitle) {
+            subtitle.textContent = 'See how your fellow Sammy Whammies are voting';
         }
     }
 }
