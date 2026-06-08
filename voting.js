@@ -268,8 +268,20 @@ function createSongElement(song) {
         div.appendChild(voteCount);
     }
     
-    // Radio button (for votable songs only)
+    // Buttons (for votable songs only)
     if (song.state === 'votable') {
+        // CLUE button (on top)
+        const clueButton = document.createElement('button');
+        clueButton.className = 'vote-button';
+        clueButton.textContent = 'CLUE';
+        clueButton.type = 'button';
+        clueButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            div.classList.toggle('show-lyric');
+        });
+        div.appendChild(clueButton);
+        
+        // SELECT button (below CLUE)
         const radioContainer = document.createElement('div');
         radioContainer.className = 'radio-container';
         
@@ -289,17 +301,6 @@ function createSongElement(song) {
         radioContainer.appendChild(radio);
         radioContainer.appendChild(label);
         div.appendChild(radioContainer);
-        
-        // CLUE button (replaces the old vote button)
-        const clueButton = document.createElement('button');
-        clueButton.className = 'vote-button';
-        clueButton.textContent = 'CLUE';
-        clueButton.type = 'button';
-        clueButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            div.classList.toggle('show-lyric');
-        });
-        div.appendChild(clueButton);
     }
     
     return div;
