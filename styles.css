@@ -315,6 +315,17 @@ h1 {
     font-style: italic;
 }
 
+/* Show on hover for desktop */
+@media (hover: hover) and (pointer: fine) {
+    .scale-left:hover .scale-artists,
+    .scale-middle:hover .scale-artists,
+    .scale-right:hover .scale-artists {
+        display: block !important;
+        opacity: 1 !important;
+    }
+}
+
+/* Show on click for mobile and when class is added */
 .scale-left.show-artists .scale-artists,
 .scale-middle.show-artists .scale-artists,
 .scale-right.show-artists .scale-artists {
@@ -322,6 +333,15 @@ h1 {
     opacity: 1 !important;
     max-height: 100px !important;
     margin-top: 8px !important;
+}
+
+/* Mobile-specific formatting */
+@media (max-width: 768px) {
+    .scale-artists {
+        white-space: normal !important;
+        max-width: 200px !important;
+        text-align: center !important;
+    }
 }
 
 .scale-left .scale-artists {
