@@ -851,7 +851,7 @@ footer {
     text-decoration: underline;
 }
 
-/* Desktop Grid Layout */
+/* Desktop Grid Layout - 3 Column Grid */
 @media (min-width: 1024px) {
     .container {
         max-width: 1400px !important;
@@ -859,7 +859,7 @@ footer {
     
     .tracklist {
         display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-columns: repeat(3, 1fr) !important;
         gap: 20px !important;
     }
     
@@ -874,10 +874,9 @@ footer {
     }
 }
 
-/* Large Desktop - 3 Column Grid */
+/* Large Desktop - Wider Gap */
 @media (min-width: 1400px) {
     .tracklist {
-        grid-template-columns: repeat(3, 1fr) !important;
         gap: 25px !important;
     }
 }

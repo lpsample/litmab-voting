@@ -16,19 +16,12 @@ const CONFIG = {
     },
 
     // Voting Period Configuration
-    // ACTIVE NOW
+    // ACTIVE NOW - Voting for Go Go Go release
     votingPeriod: {
-        start: "2026-06-01T00:00:00-04:00",  // Active now (June 1)
-        end: "2026-06-15T23:59:59-04:00",     // Ends June 15
-        nextRelease: "2026-06-17T00:00:00-04:00"  // June 17 at midnight EST
+        start: "2026-06-17T00:00:00-04:00",  // June 17, 2026 (Eastern Time)
+        end: "2026-07-01T00:00:00-04:00",     // July 1, 2026 at Midnight (Eastern Time)
+        nextRelease: "2026-07-17T00:00:00-04:00"  // July 17, 2026 at Midnight EST
     },
-    
-    // PRODUCTION DATES (uncomment these and comment out testing dates above when ready):
-    // votingPeriod: {
-    //     start: "2026-06-17T00:00:00-04:00",  // June 17, 2026 (Eastern Time)
-    //     end: "2026-07-01T23:59:59-04:00",     // July 1, 2026 (Eastern Time)
-    //     nextRelease: "2026-07-17T00:00:00-04:00"  // July 17, 2026 at Midnight EST
-    // },
     
     // Next Release Song Title (shown at top)
     nextReleaseSongTitle: "Go Go Go",
