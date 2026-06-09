@@ -520,13 +520,12 @@ function updateVotingPeriodDisplay() {
     const nextReleaseSong = document.getElementById('nextReleaseSong');
     const nextReleaseDate = document.getElementById('nextReleaseDate');
     
-    const startDate = new Date(CONFIG.votingPeriod.start);
     const endDate = new Date(CONFIG.votingPeriod.end);
     const releaseDate = new Date(CONFIG.votingPeriod.nextRelease);
     
     const formatOptions = { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' };
     
-    periodDates.textContent = `${startDate.toLocaleDateString('en-US', formatOptions)} - ${endDate.toLocaleDateString('en-US', formatOptions)}`;
+    periodDates.textContent = `Voting closes ${endDate.toLocaleDateString('en-US', formatOptions)} at Midnight EST`;
     
     // Update next release info
     if (nextReleaseSong) {
