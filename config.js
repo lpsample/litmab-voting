@@ -18,7 +18,7 @@ const CONFIG = {
     // Voting Period Configuration
     // ACTIVE NOW - Voting for Go Go Go release
     votingPeriod: {
-        start: "2026-06-17T00:00:00-04:00",  // June 17, 2026 (Eastern Time)
+        start: "2026-06-01T00:00:00-04:00",  // June 1, 2026 (Active Now - Eastern Time)
         end: "2026-07-01T00:00:00-04:00",     // July 1, 2026 at Midnight (Eastern Time)
         nextRelease: "2026-07-17T00:00:00-04:00"  // July 17, 2026 at Midnight EST
     },
