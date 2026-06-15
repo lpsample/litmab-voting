@@ -1,4 +1,76 @@
 // ============================================
+// AUDIO PLAYER FUNCTIONALITY
+// ============================================
+
+function initAudioPlayer() {
+    const audio = document.getElementById('backgroundAudio');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumePercentage = document.getElementById('volumePercentage');
+    const playIcon = playPauseBtn.querySelector('.play-icon');
+    const pauseIcon = playPauseBtn.querySelector('.pause-icon');
+    
+    if (!audio || !playPauseBtn || !volumeSlider) {
+        console.warn('Audio player elements not found');
+        return;
+    }
+    
+    // Set initial volume
+    audio.volume = volumeSlider.value / 100;
+    
+    // Play/Pause functionality
+    playPauseBtn.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play().then(() => {
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            }).catch(error => {
+                console.error('Error playing audio:', error);
+            });
+        } else {
+            audio.pause();
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+        }
+    });
+    
+    // Volume control
+    volumeSlider.addEventListener('input', (e) => {
+        const volume = e.target.value;
+        audio.volume = volume / 100;
+        volumePercentage.textContent = volume + '%';
+    });
+    
+    // Auto-play on page load (with user interaction fallback)
+    // Try to autoplay, but respect browser policies
+    const attemptAutoplay = () => {
+        audio.play().then(() => {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+        }).catch(error => {
+            console.log('Autoplay prevented by browser. User interaction required.');
+            // Keep play button visible for user to click
+        });
+    };
+    
+    // Attempt autoplay after a short delay
+    setTimeout(attemptAutoplay, 500);
+    
+    // Also try on first user interaction with the page
+    const enableAudioOnInteraction = () => {
+        if (audio.paused) {
+            attemptAutoplay();
+        }
+        // Remove listeners after first interaction
+        document.removeEventListener('click', enableAudioOnInteraction);
+        document.removeEventListener('touchstart', enableAudioOnInteraction);
+    };
+    
+    document.addEventListener('click', enableAudioOnInteraction, { once: true });
+    document.addEventListener('touchstart', enableAudioOnInteraction, { once: true });
+}
+
+// ============================================
 // ALBUM VOTING APPLICATION
 // ============================================
 
@@ -25,6 +97,9 @@ function init() {
     if (!firebaseInitialized) {
         console.warn('Running in demo mode without Firebase');
     }
+    
+    // Initialize audio player
+    initAudioPlayer();
     
     // Set album art if configured
     const albumArtEl = document.getElementById('albumArt');

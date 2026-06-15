@@ -9,6 +9,25 @@
 <body>
     <div class="container">
         <header>
+            <!-- Audio Player -->
+            <div class="audio-player-container">
+                <audio id="backgroundAudio" loop>
+                    <source src="assets/song.wav" type="audio/wav">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="audio-controls">
+                    <button id="playPauseBtn" class="audio-btn" aria-label="Play/Pause">
+                        <span class="play-icon">▶️</span>
+                        <span class="pause-icon" style="display: none;">⏸️</span>
+                    </button>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="70" class="volume-slider" aria-label="Volume">
+                        <span class="volume-percentage" id="volumePercentage">70%</span>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Album Art -->
             <div class="album-art-container">
                 <img src="album-art.jpg" alt="Album Art" class="album-art" id="albumArt">
