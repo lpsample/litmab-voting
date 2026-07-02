@@ -110,6 +110,7 @@ function init() {
     loadUserVotes();
     renderSongs();
     updateVotingPeriodDisplay();
+    checkVotingPeriodStatus();
     
     if (CONFIG.display.showCountdown) {
         startCountdown();
@@ -138,6 +139,50 @@ function init() {
     // Set up genre scale dot click handlers
     setupGenreScaleDots();
 }
+
+// Check if voting period is active and show/hide banner
+function checkVotingPeriodStatus() {
+    const now = new Date();
+    const startDate = new Date(CONFIG.votingPeriod.start);
+    const endDate = new Date(CONFIG.votingPeriod.end);
+    
+    const banner = document.getElementById('votingInactiveBanner');
+    const startDateEl = document.getElementById('votingStartDate');
+    
+    if (!banner) return;
+    
+    // Check if current time is before voting starts
+    if (now < startDate) {
+        // Voting hasn't started yet
+        banner.style.display = 'block';
+        
+        // Format the start date nicely
+        const options = { month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' };
+        const formattedDate = startDate.toLocaleString('en-US', options);
+        
+        if (startDateEl) {
+            startDateEl.textContent = formattedDate;
+        }
+    } else if (now > endDate) {
+        // Voting has ended
+        banner.style.display = 'block';
+        
+        if (startDateEl) {
+            startDateEl.textContent = 'Voting period has ended';
+        }
+        
+        // Optionally disable voting buttons
+        const submitButton = document.getElementById('submitVoteButton');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Voting Closed';
+        }
+    } else {
+        // Voting is active
+        banner.style.display = 'none';
+    }
+}
+
 
 // Set up click handlers for genre scale dots
 function setupGenreScaleDots() {

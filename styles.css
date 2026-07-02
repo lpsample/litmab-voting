@@ -1,3 +1,84 @@
+/* Voting Inactive Banner */
+.voting-inactive-banner {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+    padding: 16px 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+    border-radius: 8px;
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.banner-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.banner-text {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.banner-text strong {
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .voting-inactive-banner {
+        padding: 14px 16px;
+        margin-bottom: 16px;
+    }
+    
+    .banner-text {
+        font-size: 15px;
+    }
+    
+    .banner-icon {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .voting-inactive-banner {
+        padding: 12px 14px;
+        margin-bottom: 12px;
+    }
+    
+    .banner-content {
+        gap: 8px;
+    }
+    
+    .banner-text {
+        font-size: 14px;
+    }
+    
+    .banner-icon {
+        font-size: 20px;
+    }
+}
+
 /* Audio Player Styles */
 .audio-player-container {
     width: 100%;
