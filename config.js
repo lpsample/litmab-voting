@@ -16,15 +16,15 @@ const CONFIG = {
     },
 
     // Voting Period Configuration
-    // ACTIVE NOW - Voting for Go Go Go release
+    // ACTIVE NOW - Voting for Tax release
     votingPeriod: {
-        start: "2026-06-01T00:00:00-04:00",  // June 1, 2026 (Active Now - Eastern Time)
-        end: "2026-07-01T00:00:00-04:00",     // July 1, 2026 at Midnight (Eastern Time)
-        nextRelease: "2026-07-17T00:00:00-04:00"  // July 17, 2026 at Midnight EST
+        start: "2026-07-17T00:00:00-04:00",  // July 17, 2026 (Active Now - Eastern Time)
+        end: "2026-08-01T00:00:00-04:00",     // August 1, 2026 at Midnight (Eastern Time)
+        nextRelease: "2026-08-17T00:00:00-04:00"  // August 17, 2026 at Midnight EST
     },
     
     // Next Release Song Title (shown at top)
-    nextReleaseSongTitle: "Go Go Go",
+    nextReleaseSongTitle: "Tax",
     
     // Album Art Path (relative to HTML file or full URL)
     albumArtPath: "assets/album-art.jpg",
@@ -64,7 +64,7 @@ const CONFIG = {
         {
             number: 5,
             title: "In Loving Memory",
-            state: "locked",  // Permanently locked
+            state: "votable",  // Now available for voting
             lyricPreview: "Your mother used to worry but she's tired",
             ameriRockScale: 2
         },
@@ -92,7 +92,8 @@ const CONFIG = {
         {
             number: 9,
             title: "Tax",
-            state: "votable",
+            state: "released",  // Released August 17
+            releaseDate: "OUT AUG 17",
             lyricPreview: "I guess it's a tax of the times, payment to get out of line, didn't mean to leave behind, your prime just wasn't mine",
             ameriRockScale: 10
         },
