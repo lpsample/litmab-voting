@@ -16,10 +16,10 @@ const CONFIG = {
     },
 
     // Voting Period Configuration
-    // ACTIVE NOW - Voting for Tax release
+    // ACTIVE NOW - Special one-day voting period
     votingPeriod: {
-        start: "2026-07-17T00:00:00-04:00",  // July 17, 2026 (Active Now - Eastern Time)
-        end: "2026-08-01T00:00:00-04:00",     // August 1, 2026 at Midnight (Eastern Time)
+        start: "2026-07-07T00:00:00-04:00",  // July 7, 2026 (Active Now - Eastern Time)
+        end: "2026-07-08T00:00:00-04:00",     // July 8, 2026 at Midnight (Eastern Time)
         nextRelease: "2026-08-17T00:00:00-04:00"  // August 17, 2026 at Midnight EST
     },
     
