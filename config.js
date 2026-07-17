@@ -38,7 +38,8 @@ const CONFIG = {
             state: "released",  // Options: "released", "votable", "locked"
             releaseDate: "Out July 17",
             lyricPreview: "Neurons lost their firing pins… my skin breaks out and I get high and overeat",
-            ameriRockScale: 5  // 0=Folk/Americana, 10=Hard Rock
+            ameriRockScale: 5,  // 0=Folk/Americana, 10=Hard Rock
+            spotifyEmbed: "https://open.spotify.com/embed/track/48ibpv9te6OyvksMa9JwA4?utm_source=generator&si=65832724dd794884"
         },
         {
             number: 2,
