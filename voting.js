@@ -336,7 +336,86 @@ function createSongElement(song) {
         tooltip.innerHTML = tooltipContent;
         div.appendChild(tooltip);
     }
-    
+
+    // Audio preview player (for votable songs with a trackFile)
+    if (song.trackFile) {
+        const previewContainer = document.createElement('div');
+        previewContainer.className = 'preview-player';
+
+        const audio = document.createElement('audio');
+        audio.src = song.trackFile;
+        audio.preload = 'none';
+
+        const playBtn = document.createElement('button');
+        playBtn.className = 'preview-play-btn';
+        playBtn.type = 'button';
+        playBtn.innerHTML = '▶';
+        playBtn.setAttribute('aria-label', 'Preview');
+
+        const progressBar = document.createElement('div');
+        progressBar.className = 'preview-progress-bar';
+        const progressFill = document.createElement('div');
+        progressFill.className = 'preview-progress-fill';
+        progressBar.appendChild(progressFill);
+
+        const timeLabel = document.createElement('span');
+        timeLabel.className = 'preview-time';
+        timeLabel.textContent = '0:00';
+
+        playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Pause any other previews playing
+            document.querySelectorAll('.preview-player audio').forEach(a => {
+                if (a !== audio) {
+                    a.pause();
+                    a.currentTime = 0;
+                    a.closest('.preview-player').querySelector('.preview-play-btn').innerHTML = '▶';
+                    a.closest('.preview-player').querySelector('.preview-progress-fill').style.width = '0%';
+                    a.closest('.preview-player').querySelector('.preview-time').textContent = '0:00';
+                }
+            });
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerHTML = '❚❚';
+            } else {
+                audio.pause();
+                playBtn.innerHTML = '▶';
+            }
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                progressFill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+                const secs = Math.floor(audio.currentTime);
+                timeLabel.textContent = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
+            }
+        });
+
+        audio.addEventListener('ended', () => {
+            playBtn.innerHTML = '▶';
+            progressFill.style.width = '0%';
+            timeLabel.textContent = '0:00';
+            audio.currentTime = 0;
+        });
+
+        previewContainer.appendChild(audio);
+        previewContainer.appendChild(playBtn);
+        previewContainer.appendChild(progressBar);
+        previewContainer.appendChild(timeLabel);
+        div.appendChild(previewContainer);
+    }
+
+    // Pre-save / pre-release link button
+    if (song.presaveLink) {
+        const presaveBtn = document.createElement('a');
+        presaveBtn.href = song.presaveLink;
+        presaveBtn.target = '_blank';
+        presaveBtn.rel = 'noopener noreferrer';
+        presaveBtn.className = 'presave-button';
+        presaveBtn.textContent = 'Pre Save';
+        div.appendChild(presaveBtn);
+    }
+
     // Vote count (if enabled and votable)
     if (CONFIG.display.showVoteCounts && song.state === 'votable') {
         const voteCount = document.createElement('div');

@@ -72,6 +72,76 @@
     margin: 12px 0;
 }
 
+.preview-player {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0 4px;
+}
+
+.preview-play-btn {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.preview-play-btn:hover {
+    transform: scale(1.1);
+}
+
+.preview-progress-bar {
+    flex: 1;
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.preview-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+.preview-time {
+    flex-shrink: 0;
+    font-size: 11px;
+    color: #667eea;
+    font-weight: 600;
+    min-width: 28px;
+    text-align: right;
+}
+
+.presave-button {
+    display: inline-block;
+    margin: 10px 0 4px;
+    padding: 8px 20px;
+    background: #1DB954;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background 0.2s ease;
+}
+
+.presave-button:hover {
+    background: #17a349;
+}
+
 /* Reset and Base Styles - Override Squarespace */
 * {
     box-sizing: border-box !important;

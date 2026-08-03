@@ -18,9 +18,9 @@ const CONFIG = {
     // Voting Period Configuration
     // ACTIVE - Voting for Tax release
     votingPeriod: {
-        start: "2026-07-17T00:00:00-04:00",  // July 17, 2026 at Midnight (Eastern Time)
-        end: "2026-08-01T00:00:00-04:00",     // August 1, 2026 at Midnight (Eastern Time)
-        nextRelease: "2026-08-17T00:00:00-04:00"  // August 17, 2026 at Midnight EST
+        start: "2026-08-17T00:00:00-04:00",  // August 17, 2026 at Midnight (Eastern Time)
+        end: "2026-09-01T00:00:00-04:00",    // September 1, 2026 at Midnight (Eastern Time)
+        nextRelease: "2026-09-17T00:00:00-04:00"  // September 17, 2026 at Midnight EST
     },
     
     // Next Release Song Title (shown at top)
@@ -46,40 +46,46 @@ const CONFIG = {
             title: "Let's Get Away",
             state: "votable",
             lyricPreview: "Cruel girls they play for winners… Some overfit the model, some plain don't make it out",
-            ameriRockScale: 1
+            ameriRockScale: 1,
+            trackFile: "assets/tracks/Let's Get Away.wav"
         },
         {
             number: 3,
             title: "Violence",
             state: "votable",
             lyricPreview: "You held my wrists up above my head, now I'm wandering through the drug store, I'm full of regret",
-            ameriRockScale: 4
+            ameriRockScale: 4,
+            trackFile: "assets/tracks/Violence.wav"
         },
         {
             number: 4,
             title: "Roles",
             state: "votable",
             lyricPreview: "Every waking thought, wanna hear it come from your lips. When your mind is wrought, want you to seek my solace",
-            ameriRockScale: 2
+            ameriRockScale: 2,
+            trackFile: "assets/tracks/Roles.wav"
         },
         {
             number: 5,
             title: "In Loving Memory",
             state: "votable",  // Now available for voting
             lyricPreview: "Your mother used to worry but she's tired",
-            ameriRockScale: 2
+            ameriRockScale: 2,
+            trackFile: "assets/tracks/In Loving Memory.wav"
         },
         {
             number: 6,
             title: "Straight Talk",
             state: "votable",
             lyricPreview: "Sisyphus was talking shit, but carries on unblind",
-            ameriRockScale: 2
+            ameriRockScale: 2,
+            trackFile: "assets/tracks/Straight Talk.wav"
         },
         {
             number: 7,
             title: "XACTO",
-            state: "votable",
+            state: "released",
+            releaseDate: "Out Sept 17",
             lyricPreview: "You broke me deep to my core knowing' you're better for, not knowing me anymore",
             ameriRockScale: 7
         },
@@ -88,29 +94,34 @@ const CONFIG = {
             title: "You're Not Really From Manchester",
             state: "votable",
             lyricPreview: "You're workin' the stick shift on the M6",
-            ameriRockScale: 8
+            ameriRockScale: 8,
+            trackFile: "assets/tracks/You're Not Really from Manchester.wav"
         },
         {
             number: 9,
             title: "Tax",
-            state: "released",  // Released August 17
+            state: "released",  // Pre-save now, fully released August 17
             releaseDate: "OUT AUG 17",
             lyricPreview: "I guess it's a tax of the times, payment to get out of line, didn't mean to leave behind, your prime just wasn't mine",
-            ameriRockScale: 10
+            ameriRockScale: 10,
+            presaveLink: "https://sam-sample.ffm.to/tax"
+            // On Aug 17: remove presaveLink, add: spotifyEmbed: "https://open.spotify.com/embed/album/0gotijBRzwMDqmBVe2u22u?utm_source=generator"
         },
         {
             number: 10,
             title: "Shattered",
             state: "votable",
             lyricPreview: "I try to run what I don't understand but it never gets through to me",
-            ameriRockScale: 9
+            ameriRockScale: 9,
+            trackFile: "assets/tracks/Shattered.wav"
         },
         {
             number: 11,
-            title: "Think of Calling",
+            title: "I Think of Calling",
             state: "votable",
             lyricPreview: "Wherever you are I hope you're okay, if you ever come back I hope I have grace",
-            ameriRockScale: 2
+            ameriRockScale: 2,
+            trackFile: "assets/tracks/I Think of Calling.wav"
         },
         {
             number: 12,
