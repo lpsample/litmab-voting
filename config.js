@@ -16,14 +16,15 @@ const CONFIG = {
     },
 
     // Voting Period Configuration
-    // ACTIVE - Voting for Tax release
+    // ACTIVE - Tax releases Aug 17, then voting opens for XACTO (Sept 17)
     votingPeriod: {
         start: "2026-08-17T00:00:00-04:00",  // August 17, 2026 at Midnight (Eastern Time)
         end: "2026-09-01T00:00:00-04:00",    // September 1, 2026 at Midnight (Eastern Time)
-        nextRelease: "2026-09-17T00:00:00-04:00"  // September 17, 2026 at Midnight EST
+        nextRelease: "2026-08-17T00:00:00-04:00"  // August 17, 2026 at Midnight EST (Tax)
     },
     
     // Next Release Song Title (shown at top)
+    // On Aug 17: change to "XACTO" and nextRelease to "2026-09-17T00:00:00-04:00"
     nextReleaseSongTitle: "Tax",
     
     // Album Art Path (relative to HTML file or full URL)
@@ -87,7 +88,8 @@ const CONFIG = {
             state: "released",
             releaseDate: "Out Sept 17",
             lyricPreview: "You broke me deep to my core knowing' you're better for, not knowing me anymore",
-            ameriRockScale: 7
+            ameriRockScale: 7,
+            trackFile: "assets/tracks/XACTO.wav"
         },
         {
             number: 8,

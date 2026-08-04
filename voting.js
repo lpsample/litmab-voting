@@ -214,9 +214,10 @@ function addMobileLyricHandlers() {
         
         songItems.forEach(item => {
             item.addEventListener('click', function(e) {
-                // Don't trigger if clicking radio button or label
+                // Don't trigger if clicking radio button, label, or preview player
                 if (e.target.classList.contains('song-radio') ||
-                    e.target.classList.contains('radio-label')) {
+                    e.target.classList.contains('radio-label') ||
+                    e.target.closest('.preview-player')) {
                     return;
                 }
                 
