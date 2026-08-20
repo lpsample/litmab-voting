@@ -106,7 +106,7 @@ const CONFIG = {
             releaseDate: "OUT AUG 17",
             lyricPreview: "I guess it's a tax of the times, payment to get out of line, didn't mean to leave behind, your prime just wasn't mine",
             ameriRockScale: 10,
-            spotifyEmbed: "https://open.spotify.com/embed/track/2Fqm5Bf6eDF6ntjEMsftGO?utm_source=generator&theme=0&si=298534c6897b4b15"
+            spotifyEmbed: "https://open.spotify.com/embed/album/0gotijBRzwMDqmBVe2u22u?utm_source=generator&si=e3b259b728fd4132"
         },
         {
             number: 10,
