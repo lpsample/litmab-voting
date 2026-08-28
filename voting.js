@@ -256,11 +256,6 @@ function createSongElement(song) {
     div.className = `song-item ${song.state}`;
     div.dataset.songNumber = song.number;
     
-    // Check if user has voted
-    if (hasUserVoted(song.number) && song.state === 'votable') {
-        div.classList.add('voted');
-    }
-    
     // Song header
     const header = document.createElement('div');
     header.className = 'song-header';
@@ -458,7 +453,7 @@ function createSongElement(song) {
         const label = document.createElement('label');
         label.htmlFor = `song-${song.number}`;
         label.className = 'radio-label';
-        label.textContent = hasUserVoted(song.number) ? 'You Voted for This!' : 'SELECT';
+        label.textContent = 'SELECT';
         
         radioContainer.appendChild(radio);
         radioContainer.appendChild(label);
@@ -510,7 +505,7 @@ async function handleVote(songNumber) {
         // Update UI
         const songElement = document.querySelector(`[data-song-number="${songNumber}"]`);
         if (songElement) {
-            songElement.classList.add('voted', 'vote-success');
+            songElement.classList.add('vote-success');
             
             const radio = songElement.querySelector('.song-radio');
             const label = songElement.querySelector('.radio-label');
@@ -518,15 +513,7 @@ async function handleVote(songNumber) {
                 radio.disabled = !CONFIG.display.allowMultipleVotes;
                 radio.checked = true;
             }
-            if (label) {
-                label.textContent = 'You Voted for This!';
-            }
-            
             const status = songElement.querySelector('.song-status');
-            if (status) {
-                status.textContent = 'Voted';
-                status.className = 'song-status status-voted';
-            }
             
             // Remove animation class after animation completes
             setTimeout(() => {

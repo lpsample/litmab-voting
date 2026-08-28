@@ -677,12 +677,6 @@ h1 {
     box-shadow: none;
 }
 
-.song-item.voted {
-    border-color: #a78bfa;
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(139, 92, 246, 0.15));
-    box-shadow: 0 0 20px rgba(167, 139, 250, 0.5), 0 0 40px rgba(167, 139, 250, 0.3);
-}
-
 /* Song Header */
 .song-header {
     display: flex;
@@ -735,14 +729,6 @@ h1 {
     background: rgba(55, 65, 81, 0.5);
     color: #9ca3af;
     border: 1px solid #374151;
-}
-
-.status-voted {
-    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
-    color: #ffffff;
-    font-weight: 700;
-    box-shadow: 0 2px 12px rgba(167, 139, 250, 0.6), 0 0 20px rgba(167, 139, 250, 0.4);
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 /* Lock Icon */
@@ -1488,21 +1474,6 @@ footer {
     border-radius: 15px !important;
     transition: width 1s ease-out !important;
     box-shadow: 0 0 10px rgba(59, 130, 246, 0.5) !important;
-}
-
-.chart-bar-item.user-voted .chart-bar-fill {
-    background: linear-gradient(90deg, #a78bfa, #8b5cf6) !important;
-    box-shadow: 0 0 15px rgba(167, 139, 250, 0.6) !important;
-}
-
-.chart-bar-item.user-voted .chart-song-title {
-    color: #c4b5fd !important;
-    font-weight: 700 !important;
-}
-
-.chart-bar-item.user-voted .chart-song-title::after {
-    content: ' ✓' !important;
-    color: #a78bfa !important;
 }
 
 /* Responsive chart */
