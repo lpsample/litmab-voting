@@ -16,16 +16,15 @@ const CONFIG = {
     },
 
     // Voting Period Configuration
-    // ACTIVE - Tax releases Aug 17, then voting opens for XACTO (Sept 17)
+    // ACTIVE - Let's Get Away releases Oct 17, voting opens Oct 17 – Nov 1
     votingPeriod: {
-        start: "2026-08-17T00:00:00-04:00",  // August 17, 2026 at Midnight (Eastern Time)
-        end: "2026-09-01T00:00:00-04:00",    // September 1, 2026 at Midnight (Eastern Time)
-        nextRelease: "2026-08-17T00:00:00-04:00"  // August 17, 2026 at Midnight EST (Tax)
+        start: "2026-10-17T00:00:00-04:00",  // October 17, 2026 at Midnight (Eastern Time)
+        end: "2026-11-01T00:00:00-04:00",    // November 1, 2026 at Midnight (Eastern Time)
+        nextRelease: "2026-10-17T00:00:00-04:00"  // October 17, 2026 at Midnight EST (Let's Get Away)
     },
     
     // Next Release Song Title (shown at top)
-    // On Aug 17: change to "XACTO" and nextRelease to "2026-09-17T00:00:00-04:00"
-    nextReleaseSongTitle: "Tax",
+    nextReleaseSongTitle: "Let's Get Away",
     
     // Album Art Path (relative to HTML file or full URL)
     albumArtPath: "assets/album-art.jpg",
@@ -45,10 +44,12 @@ const CONFIG = {
         {
             number: 2,
             title: "Let's Get Away",
-            state: "votable",
+            state: "released",
+            releaseDate: "OUT OCT 17",
             lyricPreview: "Cruel girls they play for winners… Some overfit the model, some plain don't make it out",
             ameriRockScale: 1,
             trackFile: "assets/tracks/Let's Get Away.wav"
+            // spotifyEmbed: "https://open.spotify.com/embed/track/..." // TODO: add when available
         },
         {
             number: 3,
@@ -89,7 +90,8 @@ const CONFIG = {
             releaseDate: "Out Sept 17",
             lyricPreview: "You broke me deep to my core knowing' you're better for, not knowing me anymore",
             ameriRockScale: 7,
-            trackFile: "assets/tracks/XACTO.wav"
+            trackFile: "assets/tracks/XACTO.wav",
+            // spotifyEmbed: "https://open.spotify.com/embed/track/..." // TODO: add Spotify link when available
         },
         {
             number: 8,

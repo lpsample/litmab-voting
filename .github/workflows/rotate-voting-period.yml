@@ -1,0 +1,65 @@
+name: Rotate Voting Period
+
+# Runs at midnight Eastern (04:00 UTC) on the 17th of every month
+on:
+  schedule:
+    - cron: "0 4 17 * *"
+  workflow_dispatch: {}   # allow manual trigger from the Actions tab
+
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Compute new voting period dates
+        id: dates
+        run: |
+          # The 17th of the current month (today) at midnight Eastern (-04:00 or -05:00).
+          # We use a fixed -04:00 offset (EDT). Adjust to -05:00 once DST ends if needed.
+          YEAR=$(date -u +%Y)
+          MONTH=$(date -u +%m)
+
+          # Next month (roll over December → January)
+          NEXT_MONTH=$(date -u -d "$(date -u +%Y-%m-01) +1 month" +%m)
+          NEXT_YEAR=$(date -u -d  "$(date -u +%Y-%m-01) +1 month" +%Y)
+
+          START="${YEAR}-${MONTH}-17T00:00:00-04:00"
+          END="${NEXT_YEAR}-${NEXT_MONTH}-01T00:00:00-04:00"
+
+          echo "start=$START"   >> "$GITHUB_OUTPUT"
+          echo "end=$END"       >> "$GITHUB_OUTPUT"
+          echo "next=$START"    >> "$GITHUB_OUTPUT"
+          echo "month_label=$(date -u +%B)" >> "$GITHUB_OUTPUT"
+
+      - name: Patch config.js
+        run: |
+          START="${{ steps.dates.outputs.start }}"
+          END="${{ steps.dates.outputs.end }}"
+          NEXT="${{ steps.dates.outputs.next }}"
+          LABEL="${{ steps.dates.outputs.month_label }}"
+
+          # Replace the three date strings inside the votingPeriod block.
+          # Uses perl for reliable in-place regex editing on Linux.
+          perl -i -pe "
+            s|\"start\":\s*\"[^\"]+\"|\"start\": \"${START}\"|g;
+            s|\"end\":\s*\"[^\"]+\"|\"end\": \"${END}\"|g;
+            s|\"nextRelease\":\s*\"[^\"]+\"|\"nextRelease\": \"${NEXT}\"|g;
+          " config.js
+
+          # Update the human-readable comment above the votingPeriod block
+          perl -i -pe "
+            s|// ACTIVE - .*|// ACTIVE - Voting opens ${LABEL} 17, closes $(python3 -c \"import datetime; d=datetime.datetime.strptime('$END[:10]', '%Y-%m-%d'); print(d.strftime('%B %-d'))\") |;
+          " config.js
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git diff --quiet config.js && echo "No changes to commit." && exit 0
+
+          git add config.js
+          git commit -m "chore: rotate voting period to ${{ steps.dates.outputs.start }} – ${{ steps.dates.outputs.end }}"
+          git push
