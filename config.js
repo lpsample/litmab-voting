@@ -16,15 +16,17 @@ const CONFIG = {
     },
 
     // Voting Period Configuration
-    // ACTIVE - Let's Get Away releases Oct 17, voting opens Oct 17 – Nov 1
+    // Cycle: new song releases on the 17th, voting opens the 17th and closes the 1st of the next month.
+    // ACTIVE - XACTO releases Sept 17, voting opens Sept 17 – Oct 1
     votingPeriod: {
-        start: "2026-10-17T00:00:00-04:00",  // October 17, 2026 at Midnight (Eastern Time)
-        end: "2026-11-01T00:00:00-04:00",    // November 1, 2026 at Midnight (Eastern Time)
-        nextRelease: "2026-10-17T00:00:00-04:00"  // October 17, 2026 at Midnight EST (Let's Get Away)
+        start: "2026-09-17T00:00:00-04:00",  // September 17, 2026 at Midnight (Eastern Time)
+        end: "2026-10-01T00:00:00-04:00",    // October 1, 2026 at Midnight (Eastern Time)
+        nextRelease: "2026-09-17T00:00:00-04:00"  // September 17, 2026 at Midnight EST (XACTO)
     },
     
     // Next Release Song Title (shown at top)
-    nextReleaseSongTitle: "Let's Get Away",
+    // After Sept 17: change to "Let's Get Away" and update dates to Oct 17 – Nov 1
+    nextReleaseSongTitle: "XACTO",
     
     // Album Art Path (relative to HTML file or full URL)
     albumArtPath: "assets/album-art.jpg",
@@ -35,7 +37,7 @@ const CONFIG = {
         {
             number: 1,
             title: "Go Go Go",
-            state: "released",  // Options: "released", "votable", "locked"
+            state: "released",  // Options: "released", "won", "votable", "locked"
             releaseDate: "Out July 17",
             lyricPreview: "Neurons lost their firing pins… my skin breaks out and I get high and overeat",
             ameriRockScale: 5,  // 0=Folk/Americana, 10=Hard Rock
@@ -44,7 +46,7 @@ const CONFIG = {
         {
             number: 2,
             title: "Let's Get Away",
-            state: "released",
+            state: "won",
             releaseDate: "OUT OCT 17",
             lyricPreview: "Cruel girls they play for winners… Some overfit the model, some plain don't make it out",
             ameriRockScale: 1,
@@ -148,7 +150,7 @@ const CONFIG = {
 // ============================================
 /*
 1. After each voting period ends:
-   - Change the winning song's state from "votable" to "released"
+   - Change the winning song's state from "votable" to "won" (pending release) then to "released" once it drops
    - Update votingPeriod.start to the new period start date
    - Update votingPeriod.end to the new period end date
    - Update votingPeriod.nextRelease to the next release date

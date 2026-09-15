@@ -665,6 +665,16 @@ h1 {
     background: rgba(59, 130, 246, 0.15);
 }
 
+.song-item.won {
+    border-color: #d97706;
+    background: rgba(217, 119, 6, 0.08);
+}
+
+.song-item.won:hover {
+    border-color: #f59e0b;
+    box-shadow: 0 8px 20px rgba(217, 119, 6, 0.4);
+}
+
 .song-item.locked {
     opacity: 0.5;
     cursor: not-allowed;
@@ -723,6 +733,12 @@ h1 {
     background: rgba(59, 130, 246, 0.3);
     color: #93c5fd;
     border: 1px solid #3b82f6;
+}
+
+.status-won {
+    background: rgba(217, 119, 6, 0.2);
+    color: #fbbf24;
+    border: 1px solid #d97706;
 }
 
 .status-locked {

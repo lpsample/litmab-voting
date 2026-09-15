@@ -274,6 +274,8 @@ function createSongElement(song) {
     
     if (song.state === 'released') {
         status.textContent = song.releaseDate || 'Out Now';
+    } else if (song.state === 'won') {
+        status.textContent = song.releaseDate || 'Coming Soon';
     } else if (song.state === 'votable') {
         status.textContent = 'ELIGIBLE';
     } else if (song.state === 'locked') {
