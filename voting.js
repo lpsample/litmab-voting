@@ -18,8 +18,69 @@ function initFirebase() {
     }
 }
 
+// Apply the release schedule at runtime.
+// Walks CONFIG.releaseSchedule in order, finds the current window based on the clock,
+// and mutates CONFIG.songs / CONFIG.votingPeriod / CONFIG.nextReleaseSongTitle in place
+// before anything renders. No server, no commit needed — runs in every visitor's browser.
+function applySchedule() {
+    if (!CONFIG.releaseSchedule || !CONFIG.releaseSchedule.length) return;
+
+    const now = new Date();
+
+    // Sort ascending by releaseAt so we always process chronologically
+    const schedule = CONFIG.releaseSchedule
+        .map(e => ({ ...e, releaseDate: new Date(e.releaseAt), endDate: new Date(e.votingEnd) }))
+        .sort((a, b) => a.releaseDate - b.releaseDate);
+
+    // Promote every song whose releaseAt has already passed
+    schedule.forEach(entry => {
+        if (now >= entry.releaseDate) {
+            const song = CONFIG.songs.find(s => s.number === entry.songNumber);
+            if (song) {
+                song.state = 'released';
+                song.releaseDate = entry.releaseLabel;
+            }
+        }
+    });
+
+    // Find the active or next voting window:
+    // - Active:  we're between a releaseAt and its votingEnd
+    // - Upcoming: the next releaseAt that hasn't fired yet
+    let activeEntry = null;
+
+    // Check for an active window first (releaseAt <= now < votingEnd)
+    for (const entry of schedule) {
+        if (now >= entry.releaseDate && now < entry.endDate) {
+            activeEntry = entry;
+            break;
+        }
+    }
+
+    // No active window — find the next upcoming release
+    if (!activeEntry) {
+        for (const entry of schedule) {
+            if (now < entry.releaseDate) {
+                activeEntry = entry;
+                break;
+            }
+        }
+    }
+
+    if (!activeEntry) return; // all periods have passed — nothing to update
+
+    const song = CONFIG.songs.find(s => s.number === activeEntry.songNumber);
+
+    CONFIG.votingPeriod.start      = activeEntry.releaseAt;
+    CONFIG.votingPeriod.end        = activeEntry.votingEnd;
+    CONFIG.votingPeriod.nextRelease = activeEntry.releaseAt;
+    CONFIG.nextReleaseSongTitle    = song ? song.title : CONFIG.nextReleaseSongTitle;
+}
+
 // Initialize the application
 function init() {
+    // Apply release schedule before anything renders — promotes songs and sets voting window
+    applySchedule();
+
     const firebaseInitialized = initFirebase();
     
     if (!firebaseInitialized) {

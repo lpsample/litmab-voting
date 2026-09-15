@@ -17,16 +17,35 @@ const CONFIG = {
 
     // Voting Period Configuration
     // Cycle: new song releases on the 17th, voting opens the 17th and closes the 1st of the next month.
-    // ACTIVE - XACTO releases Sept 17, voting opens Sept 17 – Oct 1
+    // This is the FALLBACK — applySchedule() in voting.js overrides it automatically at runtime.
     votingPeriod: {
         start: "2026-09-17T00:00:00-04:00",  // September 17, 2026 at Midnight (Eastern Time)
         end: "2026-10-01T00:00:00-04:00",    // October 1, 2026 at Midnight (Eastern Time)
         nextRelease: "2026-09-17T00:00:00-04:00"  // September 17, 2026 at Midnight EST (XACTO)
     },
-    
+
     // Next Release Song Title (shown at top)
-    // After Sept 17: change to "Let's Get Away" and update dates to Oct 17 – Nov 1
+    // Overridden automatically by applySchedule() — no manual edits needed.
     nextReleaseSongTitle: "XACTO",
+
+    // Release Schedule — drives all automatic state changes and voting windows.
+    // Add a new entry here each time a new song is confirmed for release.
+    // songNumber matches the number field in the songs array.
+    // Cycle: song releases at releaseAt, voting opens releaseAt and closes votingEnd.
+    releaseSchedule: [
+        {
+            songNumber: 7,                              // XACTO
+            releaseAt:  "2026-09-17T00:00:00-04:00",
+            votingEnd:  "2026-10-01T00:00:00-04:00",
+            releaseLabel: "OUT SEPT 17"
+        },
+        {
+            songNumber: 2,                              // Let's Get Away
+            releaseAt:  "2026-10-17T00:00:00-04:00",
+            votingEnd:  "2026-11-01T00:00:00-04:00",
+            releaseLabel: "OUT OCT 17"
+        }
+    ],
     
     // Album Art Path (relative to HTML file or full URL)
     albumArtPath: "assets/album-art.jpg",
