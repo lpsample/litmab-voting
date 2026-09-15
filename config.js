@@ -88,8 +88,8 @@ const CONFIG = {
         {
             number: 7,
             title: "XACTO",
-            state: "released",
-            releaseDate: "Out Sept 17",
+            state: "won",
+            releaseDate: "OUT SEPT 17",
             lyricPreview: "You broke me deep to my core knowing' you're better for, not knowing me anymore",
             ameriRockScale: 7,
             trackFile: "assets/tracks/XACTO.wav",
