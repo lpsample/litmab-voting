@@ -112,7 +112,7 @@ const CONFIG = {
             lyricPreview: "You broke me deep to my core knowing' you're better for, not knowing me anymore",
             ameriRockScale: 7,
             trackFile: "assets/tracks/XACTO.wav",
-            // spotifyEmbed: "https://open.spotify.com/embed/track/..." // TODO: add Spotify link when available
+            spotifyEmbed: "https://open.spotify.com/embed/track/3bUlogaaJCgGxNaVXeWtnE?utm_source=generator&si=ec37712ceffa48f3"
         },
         {
             number: 8,
