@@ -75,7 +75,8 @@ const CONFIG = {
         {
             number: 3,
             title: "Violence",
-            state: "votable",
+            state: "won",
+            releaseDate: "OUT NOV 17",
             lyricPreview: "You held my wrists up above my head, now I'm wandering through the drug store, I'm full of regret",
             ameriRockScale: 4,
             trackFile: "assets/tracks/Violence.wav"
