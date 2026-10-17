@@ -69,8 +69,8 @@ const CONFIG = {
             releaseDate: "OUT OCT 17",
             lyricPreview: "Cruel girls they play for winners… Some overfit the model, some plain don't make it out",
             ameriRockScale: 1,
-            trackFile: "assets/tracks/Let's Get Away.wav"
-            // spotifyEmbed: "https://open.spotify.com/embed/track/..." // TODO: add when available
+            trackFile: "assets/tracks/Let's Get Away.wav",
+            spotifyEmbed: "https://open.spotify.com/embed/track/402LX7XnGzST3j4EWg1vVH?utm_source=generator&si=6648b1bb1b2c48ae"
         },
         {
             number: 3,
