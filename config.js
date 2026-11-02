@@ -16,48 +16,15 @@ const CONFIG = {
     },
 
     // Voting Period Configuration
-    // Cycle: new song releases on the 17th, voting opens the 17th and closes the 1st of the next month.
-    // This is the FALLBACK — applySchedule() in voting.js overrides it automatically at runtime.
+    // ACTIVE - Let's Get Away releases Oct 17, voting opens Oct 17 – Nov 1
     votingPeriod: {
-        start: "2026-11-17T00:00:00-05:00",  // November 17, 2026 at Midnight EST
-        end: "2026-12-01T00:00:00-05:00",    // December 1, 2026 at Midnight EST
-        nextRelease: "2026-11-17T00:00:00-05:00"  // November 17, 2026 at Midnight EST (Violence)
+        start: "2026-10-17T00:00:00-04:00",  // October 17, 2026 at Midnight (Eastern Time)
+        end: "2026-11-01T00:00:00-04:00",    // November 1, 2026 at Midnight (Eastern Time)
+        nextRelease: "2026-10-17T00:00:00-04:00"  // October 17, 2026 at Midnight EST (Let's Get Away)
     },
-
+    
     // Next Release Song Title (shown at top)
-    // Overridden automatically by applySchedule() — no manual edits needed.
-    nextReleaseSongTitle: "Violence",
-
-    // Release Schedule — drives all automatic state changes and voting windows.
-    // Add a new entry here each time a new song is confirmed for release.
-    // songNumber matches the number field in the songs array.
-    // Cycle: song releases at releaseAt, voting opens releaseAt and closes votingEnd.
-    releaseSchedule: [
-        {
-            songNumber: 7,                              // XACTO
-            releaseAt:  "2026-09-17T00:00:00-04:00",
-            votingEnd:  "2026-10-01T00:00:00-04:00",
-            releaseLabel: "OUT SEPT 17"
-        },
-        {
-            songNumber: 2,                              // Let's Get Away
-            releaseAt:  "2026-10-17T00:00:00-04:00",
-            votingEnd:  "2026-11-01T00:00:00-04:00",
-            releaseLabel: "OUT OCT 17"
-        },
-        {
-            songNumber: 3,                              // Violence
-            releaseAt:  "2026-11-17T00:00:00-05:00",
-            votingEnd:  "2026-12-01T00:00:00-05:00",
-            releaseLabel: "OUT NOV 17"
-        },
-        {
-            songNumber: 6,                              // Straight Talk
-            releaseAt:  "2026-12-17T00:00:00-05:00",
-            votingEnd:  "2027-01-01T00:00:00-05:00",
-            releaseLabel: "OUT DEC 17"
-        }
-    ],
+    nextReleaseSongTitle: "Let's Get Away",
     
     // Album Art Path (relative to HTML file or full URL)
     albumArtPath: "assets/album-art.jpg",
@@ -68,7 +35,7 @@ const CONFIG = {
         {
             number: 1,
             title: "Go Go Go",
-            state: "released",  // Options: "released", "won", "votable", "locked"
+            state: "released",  // Options: "released", "votable", "locked"
             releaseDate: "Out July 17",
             lyricPreview: "Neurons lost their firing pins… my skin breaks out and I get high and overeat",
             ameriRockScale: 5,  // 0=Folk/Americana, 10=Hard Rock
@@ -77,18 +44,17 @@ const CONFIG = {
         {
             number: 2,
             title: "Let's Get Away",
-            state: "won",
+            state: "released",
             releaseDate: "OUT OCT 17",
             lyricPreview: "Cruel girls they play for winners… Some overfit the model, some plain don't make it out",
             ameriRockScale: 1,
-            trackFile: "assets/tracks/Let's Get Away.wav",
-            spotifyEmbed: "https://open.spotify.com/embed/track/402LX7XnGzST3j4EWg1vVH?utm_source=generator&si=6648b1bb1b2c48ae"
+            trackFile: "assets/tracks/Let's Get Away.wav"
+            // spotifyEmbed: "https://open.spotify.com/embed/track/..." // TODO: add when available
         },
         {
             number: 3,
             title: "Violence",
-            state: "won",
-            releaseDate: "OUT NOV 17",
+            state: "votable",
             lyricPreview: "You held my wrists up above my head, now I'm wandering through the drug store, I'm full of regret",
             ameriRockScale: 4,
             trackFile: "assets/tracks/Violence.wav"
@@ -112,8 +78,7 @@ const CONFIG = {
         {
             number: 6,
             title: "Straight Talk",
-            state: "won",
-            releaseDate: "OUT DEC 17",
+            state: "votable",
             lyricPreview: "Sisyphus was talking shit, but carries on unblind",
             ameriRockScale: 2,
             trackFile: "assets/tracks/Straight Talk.wav"
@@ -121,12 +86,12 @@ const CONFIG = {
         {
             number: 7,
             title: "XACTO",
-            state: "won",
+            state: "released",
             releaseDate: "OUT SEPT 17",
             lyricPreview: "You broke me deep to my core knowing' you're better for, not knowing me anymore",
             ameriRockScale: 7,
             trackFile: "assets/tracks/XACTO.wav",
-            spotifyEmbed: "https://open.spotify.com/embed/track/3bUlogaaJCgGxNaVXeWtnE?utm_source=generator&si=ec37712ceffa48f3"
+            // spotifyEmbed: "https://open.spotify.com/embed/track/..." // TODO: add Spotify link when available
         },
         {
             number: 8,
@@ -165,7 +130,7 @@ const CONFIG = {
             number: 12,
             title: "Glass",
             state: "locked",  // Permanently locked (final song)
-            lyricPreview: "Try to find a way to get it out, make it better feel less consumed. Guess the lows are part of livin'",
+            lyricPreview: "Try to find a way to get it out, make it better feel less consumed.",
             ameriRockScale: 10
         }
     ],
@@ -183,7 +148,7 @@ const CONFIG = {
 // ============================================
 /*
 1. After each voting period ends:
-   - Change the winning song's state from "votable" to "won" (pending release) then to "released" once it drops
+   - Change the winning song's state from "votable" to "released"
    - Update votingPeriod.start to the new period start date
    - Update votingPeriod.end to the new period end date
    - Update votingPeriod.nextRelease to the next release date
