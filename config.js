@@ -20,11 +20,11 @@ const CONFIG = {
     votingPeriod: {
         start: "2026-11-17T00:00:00-05:00",  // November 17, 2026 at Midnight (Eastern Time)
         end: "2026-12-01T00:00:00-05:00",    // December 1, 2026 at Midnight (Eastern Time)
-        nextRelease: "2026-11-17T00:00:00-05:00"  // November 17, 2026 at Midnight EST (Violence)
+        nextRelease: "2026-12-17T00:00:00-05:00"  // December 17, 2026 at Midnight EST (Straight Talk)
     },
     
     // Next Release Song Title (shown at top)
-    nextReleaseSongTitle: "Violence",
+    nextReleaseSongTitle: "Straight Talk",
     
     // Album Art Path (relative to HTML file or full URL)
     albumArtPath: "assets/album-art.jpg",

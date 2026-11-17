@@ -68,12 +68,24 @@ function applySchedule() {
 
     if (!activeEntry) return; // all periods have passed — nothing to update
 
-    const song = CONFIG.songs.find(s => s.number === activeEntry.songNumber);
+    CONFIG.votingPeriod.start = activeEntry.releaseAt;
+    CONFIG.votingPeriod.end   = activeEntry.votingEnd;
 
-    CONFIG.votingPeriod.start      = activeEntry.releaseAt;
-    CONFIG.votingPeriod.end        = activeEntry.votingEnd;
-    CONFIG.votingPeriod.nextRelease = activeEntry.releaseAt;
-    CONFIG.nextReleaseSongTitle    = song ? song.title : CONFIG.nextReleaseSongTitle;
+    // For the "Next Release" banner, find the next scheduled entry *after* the active one
+    const nextEntry = schedule.find(e => new Date(e.releaseAt) > new Date(activeEntry.releaseAt));
+    const nextSong  = nextEntry
+        ? CONFIG.songs.find(s => s.number === nextEntry.songNumber)
+        : null;
+
+    if (nextEntry) {
+        CONFIG.votingPeriod.nextRelease = nextEntry.releaseAt;
+        CONFIG.nextReleaseSongTitle     = nextSong ? nextSong.title : CONFIG.nextReleaseSongTitle;
+    } else {
+        // No future entry — fall back to the active entry itself
+        const activeSong = CONFIG.songs.find(s => s.number === activeEntry.songNumber);
+        CONFIG.votingPeriod.nextRelease = activeEntry.releaseAt;
+        CONFIG.nextReleaseSongTitle     = activeSong ? activeSong.title : CONFIG.nextReleaseSongTitle;
+    }
 }
 
 // Initialize the application
@@ -131,33 +143,28 @@ function checkVotingPeriodStatus() {
     const now = new Date();
     const startDate = new Date(CONFIG.votingPeriod.start);
     const endDate = new Date(CONFIG.votingPeriod.end);
-    
-    const banner = document.getElementById('votingInactiveBanner');
-    const startDateEl = document.getElementById('votingStartDate');
-    
-    if (!banner) return;
-    
-    // Check if current time is before voting starts
+
+    const inactiveBanner = document.getElementById('votingInactiveBanner');
+    const activeBanner   = document.getElementById('votingActiveBanner');
+    const startDateEl    = document.getElementById('votingStartDate');
+
+    if (!inactiveBanner) return;
+
     if (now < startDate) {
         // Voting hasn't started yet
-        banner.style.display = 'block';
-        
-        // Format the start date nicely
+        inactiveBanner.style.display = 'block';
+        if (activeBanner) activeBanner.style.display = 'none';
+
         const options = { month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' };
-        const formattedDate = startDate.toLocaleString('en-US', options);
-        
-        if (startDateEl) {
-            startDateEl.textContent = formattedDate;
-        }
+        if (startDateEl) startDateEl.textContent = startDate.toLocaleString('en-US', options);
+
     } else if (now > endDate) {
         // Voting has ended
-        banner.style.display = 'block';
-        
-        if (startDateEl) {
-            startDateEl.textContent = 'Voting period has ended';
-        }
-        
-        // Optionally disable voting buttons
+        inactiveBanner.style.display = 'block';
+        if (activeBanner) activeBanner.style.display = 'none';
+
+        if (startDateEl) startDateEl.textContent = 'Voting period has ended';
+
         const submitButton = document.getElementById('submitVoteButton');
         if (submitButton) {
             submitButton.disabled = true;
@@ -165,8 +172,37 @@ function checkVotingPeriodStatus() {
         }
     } else {
         // Voting is active
-        banner.style.display = 'none';
+        inactiveBanner.style.display = 'none';
+        if (activeBanner) activeBanner.style.display = 'block';
+        startVotingActiveCountdown();
     }
+}
+
+// Tick the "Voting ends in: X" text inside the active banner
+function startVotingActiveCountdown() {
+    updateVotingActiveCountdown();
+    setInterval(updateVotingActiveCountdown, 1000);
+}
+
+function updateVotingActiveCountdown() {
+    const el = document.getElementById('votingActiveCountdown');
+    if (!el) return;
+
+    const diff = new Date(CONFIG.votingPeriod.end) - new Date();
+    if (diff <= 0) { el.textContent = 'Voting has closed!'; return; }
+
+    const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    let t = '';
+    if (days > 0)                        t += `${days}d `;
+    if (hours > 0 || days > 0)           t += `${hours}h `;
+    if (minutes > 0 || hours > 0 || days > 0) t += `${minutes}m `;
+    t += `${seconds}s`;
+
+    el.textContent = `Voting closes in ${t}`;
 }
 
 
