@@ -16,15 +16,15 @@ const CONFIG = {
     },
 
     // Voting Period Configuration
-    // ACTIVE - Let's Get Away releases Oct 17, voting opens Oct 17 – Nov 1
+    // ACTIVE - Violence releases Nov 17, voting opens Nov 17 – Dec 1
     votingPeriod: {
-        start: "2026-10-17T00:00:00-04:00",  // October 17, 2026 at Midnight (Eastern Time)
-        end: "2026-11-01T00:00:00-04:00",    // November 1, 2026 at Midnight (Eastern Time)
-        nextRelease: "2026-10-17T00:00:00-04:00"  // October 17, 2026 at Midnight EST (Let's Get Away)
+        start: "2026-11-17T00:00:00-05:00",  // November 17, 2026 at Midnight (Eastern Time)
+        end: "2026-12-01T00:00:00-05:00",    // December 1, 2026 at Midnight (Eastern Time)
+        nextRelease: "2026-11-17T00:00:00-05:00"  // November 17, 2026 at Midnight EST (Violence)
     },
     
     // Next Release Song Title (shown at top)
-    nextReleaseSongTitle: "Let's Get Away",
+    nextReleaseSongTitle: "Violence",
     
     // Album Art Path (relative to HTML file or full URL)
     albumArtPath: "assets/album-art.jpg",
@@ -54,7 +54,8 @@ const CONFIG = {
         {
             number: 3,
             title: "Violence",
-            state: "votable",
+            state: "released",
+            releaseDate: "OUT NOV 17",
             lyricPreview: "You held my wrists up above my head, now I'm wandering through the drug store, I'm full of regret",
             ameriRockScale: 4,
             trackFile: "assets/tracks/Violence.wav",
@@ -79,7 +80,8 @@ const CONFIG = {
         {
             number: 6,
             title: "Straight Talk",
-            state: "votable",
+            state: "won",
+            releaseDate: "OUT DEC 17",
             lyricPreview: "Sisyphus was talking shit, but carries on unblind",
             ameriRockScale: 2,
             trackFile: "assets/tracks/Straight Talk.wav"
@@ -133,6 +135,23 @@ const CONFIG = {
             state: "locked",  // Permanently locked (final song)
             lyricPreview: "Try to find a way to get it out, make it better feel less consumed.",
             ameriRockScale: 10
+        }
+    ],
+
+    // Release Schedule — drives automatic state promotion and voting windows via applySchedule()
+    // Each entry: songNumber, releaseAt (ISO with UTC offset), votingEnd, releaseLabel
+    releaseSchedule: [
+        {
+            songNumber: 3,                              // Violence
+            releaseAt:  "2026-11-17T00:00:00-05:00",   // Nov 17 midnight EST
+            votingEnd:  "2026-12-01T00:00:00-05:00",   // Dec 1 midnight EST
+            releaseLabel: "OUT NOV 17"
+        },
+        {
+            songNumber: 6,                              // Straight Talk
+            releaseAt:  "2026-12-17T00:00:00-05:00",   // Dec 17 midnight EST
+            votingEnd:  "2027-01-01T00:00:00-05:00",   // Jan 1 midnight EST
+            releaseLabel: "OUT DEC 17"
         }
     ],
 
