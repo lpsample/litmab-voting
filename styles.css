@@ -1,3 +1,15 @@
+/* Voting Active Banner */
+.voting-active-banner {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: white;
+    padding: 16px 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+    border-radius: 8px;
+    animation: slideDown 0.5s ease-out;
+}
+
 /* Voting Inactive Banner */
 .voting-inactive-banner {
     background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
