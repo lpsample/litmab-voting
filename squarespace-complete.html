@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Album Release Voting</title>
     <style>
+/* Voting Active Banner */
+.voting-active-banner {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: white;
+    padding: 16px 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.banner-text {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
 /* Mobile/Desktop Instructions Toggle */
 .mobile-instruction {
     display: none;
@@ -608,6 +632,13 @@ footer {
 </head>
 <body>
     <div class="container">
+        <!-- Voting Active Banner (shown when voting is open) -->
+        <div class="voting-active-banner" id="votingActiveBanner" style="display: none;">
+            <div class="banner-content">
+                <span class="banner-text">🗳️ <strong>Voting is Open!</strong> &nbsp;<span id="votingActiveCountdown"></span></span>
+            </div>
+        </div>
+
         <header>
             <!-- Album Art -->
             <div class="album-art-container">
@@ -683,11 +714,11 @@ const CONFIG = {
         appId: "1:905700324179:web:c8caee05d0c9662afde7a6"
     },
     votingPeriod: {
-        start: "2026-06-17T00:00:00-04:00",
-        end: "2026-07-01T23:59:59-04:00",  // Voting closes July 1 at Midnight EST
-        nextRelease: "2026-07-17T00:00:00-04:00"
+        start: "2026-11-17T00:00:00-05:00",
+        end: "2026-12-01T00:00:00-05:00",
+        nextRelease: "2026-12-17T00:00:00-05:00"
     },
-    nextReleaseSongTitle: "Go Go Go",
+    nextReleaseSongTitle: "Straight Talk",
     albumArtPath: "https://lpsample.github.io/litmab-voting/assets/album-art.jpg",
     songs: [
         {
@@ -699,14 +730,17 @@ const CONFIG = {
         {
             number: 2,
             title: "Let's Get Away",
-            state: "votable",
+            state: "released",
+            releaseDate: "OUT OCT 17",
             lyricPreview: "Cruel girls they play for winners… Some overfit the model, some plain don't make it out"
         },
         {
             number: 3,
             title: "Violence",
-            state: "votable",
-            lyricPreview: "You held my wrists up above my head, now I'm wandering through the drug store, I'm full of regret"
+            state: "released",
+            releaseDate: "OUT NOV 17",
+            lyricPreview: "You held my wrists up above my head, now I'm wandering through the drug store, I'm full of regret",
+            spotifyEmbed: "https://open.spotify.com/embed/track/02hBuKf7fpGaIrTrBBaKII?utm_source=generator&si=75fed8d457f1487b"
         },
         {
             number: 4,
@@ -723,7 +757,8 @@ const CONFIG = {
         {
             number: 6,
             title: "Straight Talk",
-            state: "votable",
+            state: "won",
+            releaseDate: "OUT DEC 17",
             lyricPreview: "Sisyphus was talking shit, but carries on unblind"
         },
         {
@@ -803,6 +838,7 @@ function init() {
     loadUserVotes();
     renderSongs();
     updateVotingPeriodDisplay();
+    checkVotingPeriodStatus();
     
     if (CONFIG.display.showCountdown) {
         startCountdown();
@@ -1178,6 +1214,47 @@ function isVotingPeriodActive() {
     const end = new Date(CONFIG.votingPeriod.end);
     
     return now >= start && now <= end;
+}
+
+function checkVotingPeriodStatus() {
+    const now = new Date();
+    const startDate = new Date(CONFIG.votingPeriod.start);
+    const endDate = new Date(CONFIG.votingPeriod.end);
+
+    const activeBanner = document.getElementById('votingActiveBanner');
+
+    if (now >= startDate && now <= endDate) {
+        if (activeBanner) activeBanner.style.display = 'block';
+        startVotingActiveCountdown();
+    } else {
+        if (activeBanner) activeBanner.style.display = 'none';
+    }
+}
+
+function startVotingActiveCountdown() {
+    updateVotingActiveCountdown();
+    setInterval(updateVotingActiveCountdown, 1000);
+}
+
+function updateVotingActiveCountdown() {
+    const el = document.getElementById('votingActiveCountdown');
+    if (!el) return;
+
+    const diff = new Date(CONFIG.votingPeriod.end) - new Date();
+    if (diff <= 0) { el.textContent = 'Voting has closed!'; return; }
+
+    const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    let t = '';
+    if (days > 0)                             t += `${days}d `;
+    if (hours > 0 || days > 0)                t += `${hours}h `;
+    if (minutes > 0 || hours > 0 || days > 0) t += `${minutes}m `;
+    t += `${seconds}s`;
+
+    el.textContent = `Voting closes in ${t}`;
 }
 
 function startCountdown() {
