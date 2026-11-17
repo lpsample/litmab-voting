@@ -57,7 +57,8 @@ const CONFIG = {
             state: "votable",
             lyricPreview: "You held my wrists up above my head, now I'm wandering through the drug store, I'm full of regret",
             ameriRockScale: 4,
-            trackFile: "assets/tracks/Violence.wav"
+            trackFile: "assets/tracks/Violence.wav",
+            spotifyEmbed: "https://open.spotify.com/embed/track/02hBuKf7fpGaIrTrBBaKII?utm_source=generator&si=75fed8d457f1487b"
         },
         {
             number: 4,
